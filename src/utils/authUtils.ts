@@ -133,3 +133,18 @@ export async function getUserFromSession(): Promise<User> {
     throw new Error("Failed to fetch user");
   }
 }
+/**
+ * Logout user
+ * 
+ */
+export async function logout(): Promise<void> {
+  try {
+    await api.post("/logout");
+    console.log("Logged out succesfully");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      console.error(error);
+    }
+    throw new Error("Failed to logout user");
+  }
+}
