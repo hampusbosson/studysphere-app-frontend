@@ -11,7 +11,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isLoggedIn } = useAuth();
   return (
-    <div className="flex flex-col justify-between h-screen">
+    <div className="flex flex-col justify-between h-screen bg-background">
       {isLoggedIn ? (
         <HeaderLoggedIn />
       ) : (

@@ -7,7 +7,7 @@ interface ProfileButtonProps {
 
 const ProfileButton: React.FC<ProfileButtonProps> = ({ firstLetterEmail, onPress }) => {
     return (
-        <button onClick={onPress}>
+        <button onClick={onPress} className="bg-accent rounded-full w-8 h-8">
             {firstLetterEmail}
         </button>
     )
