@@ -1,6 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'http://localhost:3000/api/auth'; // Replace with your backend's base URL
+const api = axios.create({
+  baseURL: "http://localhost:3000/api/auth", // backend URL
+  withCredentials: true, // Include cookies in requests
+});
 
 // Define a common type for responses if the structure is consistent
 interface ApiResponse<T = unknown> {
@@ -14,25 +17,81 @@ interface ApiResponse<T = unknown> {
 interface User {
   id: string;
   email: string;
-  username?: string; // Include username
+  isVerified: boolean;
 }
 
 /**
  * Signup a new user
  * @param {string} email - User's email
- * @param {string} username - User's username
  * @param {string} password - User's password
  * @returns {Promise<User>} Response from the backend
  */
-export async function signup(email: string, username: string, password: string): Promise<User> {
+export async function signup(email: string, password: string): Promise<User> {
   try {
-    const response = await axios.post<ApiResponse<User>>(`${BASE_URL}/signup`, { email, username, password });
+    const response = await api.post<ApiResponse<User>>("/signup", {
+      email,
+      password,
+    });
     return response.data.user; // Adjust based on your backend's response structure
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.data) {
-      throw new Error(error.response.data.message || 'Signup failed');
+      // Check if backend returned validation errors
+      const validationErrors = error.response.data.errors;
+       if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+        throw new Error(validationErrors[0].msg); // Use the first error message
+      }
+      throw new Error(error.response.data.message || "Signup failed");
     }
-    throw new Error('Signup failed');
+    throw new Error("Signup failed");
+  }
+}
+
+/**
+ * Verify user email with OTP
+ * @param {string} email - User's email
+ * @param {string} otp - One-Time Password sent to the user's email
+ * @returns {Promise<boolean>} True if verification succeeds, false otherwise
+ */
+export async function verifyEmail(
+  email: string,
+  otp: string,
+): Promise<boolean> {
+  try {
+    const response = await api.post<ApiResponse<null>>( '/verify-email', { 
+      email, 
+      otp 
+    });
+
+    return response.status === 200; // Return true if status is 200 OK
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      console.error(error.response.data.message || "Failed to verify email");
+    } else {
+      console.error("Failed to verify email");
+    }
+    return false; // Return false on error
+  }
+}
+
+/**
+ * Resend the OTP to a user's email for email verification.
+ * @param {string} email - User's email address
+ * @returns {Promise<boolean>} True if OTP was successfully resent, false otherwise
+ */
+export async function resendOTP(email: string): Promise<boolean> {
+  try {
+    const response = await api.post<ApiResponse<null>>('/resend-otp', {
+      email 
+    });
+
+    return response.status === 200; // True if request succeeds
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      console.error(error.response.data.message || "Failed to resend OTP.");
+    } else {
+      console.error("Failed to resend OTP.");
+    }
+    return false; // Return false on error
   }
 }
 
@@ -42,35 +101,35 @@ export async function signup(email: string, username: string, password: string):
  * @param {string} password - User's password
  * @returns {Promise<{ token: string }>} Response from the backend
  */
-export async function login(identifier: string, password: string): Promise<{ token: string }> {
+export async function login(email: string, password: string): Promise<void> {
   try {
-    const response = await axios.post<ApiResponse<{ token: string }>>(`${BASE_URL}/login`, { identifier, password });
-    return response.data.data;
+    const response = await api.post('/login', { email, password });
+
+    if (response.status === 200) {
+      console.log("Login successful!");
+    }
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.data) {
-      throw new Error(error.response.data.message || 'Login failed');
+      console.error("Backend error:", error.response.data.message);
+      throw new Error(error.response.data.message || "Login failed");
     }
-    throw new Error('Login failed');
+    throw new Error("Login failed");
   }
 }
 
 /**
- * Get the user from the token
- * @param {string} token - JWT token
+ * Get the user from the current session (via cookies)
  * @returns {Promise<User>} Response from the backend
  */
-export async function getUserFromToken(token: string): Promise<User> {
+export async function getUserFromSession(): Promise<User> {
   try {
-    const response = await axios.get<ApiResponse<User>>(`${BASE_URL}/getUserFromToken`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data.user;
+    const response = await api.get<ApiResponse<User>>("/session");
+    console.log(response.data.data);
+    return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.data) {
-      throw new Error(error.response.data.message || 'Failed to fetch user');
+      throw new Error(error.response.data.message || "Failed to fetch user");
     }
-    throw new Error('Failed to fetch user');
+    throw new Error("Failed to fetch user");
   }
 }

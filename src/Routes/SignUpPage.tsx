@@ -1,18 +1,66 @@
-import React, { useState } from "react";
-import InputField from "../components/Auth/InputField";
-import SubmitButton from "../components/Auth/SubmitButton";
+import React from "react";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import Logo from "../components/Header/Logo";
+import { signup } from "../utils/authUtils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+
+const schema = z
+  .object({
+    email: z.string().email("Please provide a valid email address."),
+    password: z
+      .string()
+      .min(7, "Password must be at least 7 characters long.")
+      .regex(/[0-9]/, "Password must contain at least one number.")
+      .regex(/[a-zA-Z]/, "Password must contain at least one letter."),
+    repeatedPassword: z.string(),
+  })
+  .refine((data) => data.password === data.repeatedPassword, {
+    message: "Passwords must match.",
+    path: ["repeatedPassword"], // Points to the field with the issue
+  });
+
+type FormFields = z.infer<typeof schema>;
 
 const SignupPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatedPasword, setRepeatedPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent page reload
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Add login logic here, such as calling an API
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    const { email, password } = data;
+    try {
+      await signup(email, password);
+      
+      navigate("/verify", {state: { email, password } });
+
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+
+      if (axiosError.message) {
+        // Use the backend error message
+        setError("root", {
+          type: "server",
+          message: axiosError.message, // Display the backend error message
+        });
+      } else {
+        // Fallback for unexpected errors
+        setError("root", {
+          type: "server",
+          message: "An unexpected error occurred. Please try again.",
+        });
+      }
+    }
+
   };
 
   return (
@@ -27,36 +75,59 @@ const SignupPage: React.FC = () => {
         <h2 className="text-gray-300 font-semibold">Please sign up with</h2>
       </div>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4 w-full justify-center items-center"
       >
-        <InputField
-          type="email"
-          value={email}
-          placeholder="Email Address"
-          onValueChange={setEmail}
+        <input
+          {...register("email")}
+          type="text"
+          placeholder="Email"
+          className="border border-zinc-600 bg-[#1A1C2999] placeholder-gray-300 p-3 rounded-lg w-72 focus:outline-accent"
         />
-        <InputField
+        {errors.email && (
+          <div className="text-red-500 text-xs w-72 text-left -m-2">
+            {errors.email.message}
+          </div>
+        )}
+        <input
+          {...register("password")}
           type="password"
-          value={password}
           placeholder="Password"
-          onValueChange={setPassword}
+          className="border border-zinc-600 bg-[#1A1C2999] placeholder-gray-300 p-3 rounded-lg w-72 focus:outline-accent"
         />
-        <InputField
+        {errors.password && (
+          <div className="text-red-500 text-xs w-72 text-left -m-2">
+            {errors.password.message}
+          </div>
+        )}
+        <input
+          {...register("repeatedPassword")}
           type="password"
-          value={repeatedPasword}
           placeholder="Repeat Password"
-          onValueChange={setRepeatedPassword}
+          className="border border-zinc-600 bg-[#1A1C2999] placeholder-gray-300 p-3 rounded-lg w-72 focus:outline-accent"
         />
-        <div className="w-72 -mt-3">
-        </div>
-        <SubmitButton title="Sign Up" />
+        {errors.repeatedPassword && (
+          <div className="text-red-500 text-xs w-72 text-left -m-2">
+            {errors.repeatedPassword?.message}
+          </div>
+        )}
+
+        {errors.root && (
+          <div className="text-red-500 text-xs w-72 text-left -mt-2">
+            {errors.root.message}
+          </div>
+        )}
+        <button
+          disabled={isSubmitting}
+          type="submit"
+          className="bg-transparent text-white py-2 px-4 rounded-lg border-silver border w-72 hover:bg-accent transition duration-200  hover:border-accent font-semibold mt-4"
+        >
+          {isSubmitting ? "Loading..." : "Submit"}
+        </button>
       </form>
       <button className="flex flex-row gap-1 mt-3 group">
         Already have an account?
-        <p className="underline font-semibold group-hover:text-accent">
-          Login
-        </p>
+        <p className="underline font-semibold group-hover:text-accent">Login</p>
       </button>
     </div>
   );

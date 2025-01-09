@@ -11,7 +11,6 @@ interface HeaderButtonProps {
 const HeaderButton: React.FC<HeaderButtonProps> = ({ linkName, buttonName, size = 20 }) => {
     const fontSize = { fontSize: `${size}px` };
 
-
     const buttonClass = classNames(
         "font-medium text-lg rounded-3xl px-4 py-1 transition duration-200 flex justify-center items-center font-lato", // Base styles with padding and smooth hover effect
         {

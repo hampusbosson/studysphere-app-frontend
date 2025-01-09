@@ -10,13 +10,13 @@ const MainContent: React.FC = () => {
         <h1 className="text-5xl font-bold font-montserrat bg-shiny-silver bg-clip-text text-transparent flex text-center p-1">
           Master Your Studies, Effortlessly
         </h1>
-        <h2 className="text-2xl font-raleway font-semibold bg-shiny-silver bg-clip-text text-transparent text-center -mt-1">
+        <h2 className="text-2xl font-raleway font-normal bg-shiny-silver bg-clip-text text-transparent text-center -mt-1">
           Summarize PDFs, take interactive quizzes, highlight key ideas, and organize your notes -
           All in one app designed to supercharge your learning.
         </h2>
       </div>
       <div className="mt-10">
-        <CallToActionButton linkName="login" buttonName="Get started for free" />
+        <CallToActionButton linkName="signup" buttonName="Get started for free" />
         {/* Canvas wraps ShowcaseContainer */}
         <div className="mt-20 w-full h-[200px] bg-black">
           <Canvas>

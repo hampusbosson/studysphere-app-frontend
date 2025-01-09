@@ -2,16 +2,32 @@ import React, { useState } from "react";
 import InputField from "../components/Auth/InputField";
 import SubmitButton from "../components/Auth/SubmitButton";
 import Logo from "../components/Header/Logo";
+import { login } from "../utils/authUtils";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../context/useAuth";
+import { getUserFromSession } from "../utils/authUtils";
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Add login logic here, such as calling an API
+  
+    try {
+      await login(email, password); 
+
+      const userData = await getUserFromSession();
+      setUser(userData);
+
+      navigate('/home'); // Redirect only on success
+    } catch (error) {
+      console.error("Login failed:", error); // Log any errors
+      alert("Login failed. Please try again."); // Provide feedback to the user
+    }
   };
 
   return (
