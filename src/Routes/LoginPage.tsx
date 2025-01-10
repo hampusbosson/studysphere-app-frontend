@@ -58,6 +58,8 @@ const LoginPage: React.FC = () => {
 
   const signupRedirect = () => navigate("/signup");
 
+  const resetPasswordRedirect = () => navigate("/reset");
+
   return (
     <div className="w-full flex flex-col justify-center items-center bg-background h-screen">
       <div className="absolute top-4 left-4 p-2">
@@ -102,6 +104,11 @@ const LoginPage: React.FC = () => {
             {errors.root.message}
           </div>
         )}
+        <div className="w-72 -mt-3">
+          <button className="underline text-left text-sm pl-1 font-medium text-gray-300" onClick={resetPasswordRedirect}>
+            Forgot your password?
+          </button>
+        </div>
 
         <button
           disabled={isSubmitting}
