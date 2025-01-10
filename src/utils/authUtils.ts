@@ -111,7 +111,7 @@ export async function login(email: string, password: string): Promise<void> {
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.data) {
       console.error("Backend error:", error.response.data.message);
-      throw new Error(error.response.data.message || "Login failed");
+      throw error;
     }
     throw new Error("Login failed");
   }

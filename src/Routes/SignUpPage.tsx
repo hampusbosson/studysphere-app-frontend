@@ -60,8 +60,9 @@ const SignupPage: React.FC = () => {
         });
       }
     }
-
   };
+
+  const loginRedirect = () => navigate('/login');
 
   return (
     <div className="w-full flex flex-col justify-center items-center bg-background h-screen">
@@ -125,7 +126,7 @@ const SignupPage: React.FC = () => {
           {isSubmitting ? "Loading..." : "Submit"}
         </button>
       </form>
-      <button className="flex flex-row gap-1 mt-3 group">
+      <button className="flex flex-row gap-1 mt-3 group" onClick={loginRedirect}>
         Already have an account?
         <p className="underline font-semibold group-hover:text-accent">Login</p>
       </button>
