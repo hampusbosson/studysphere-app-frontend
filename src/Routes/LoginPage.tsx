@@ -105,7 +105,11 @@ const LoginPage: React.FC = () => {
           </div>
         )}
         <div className="w-72 -mt-3">
-          <button className="underline text-left text-sm pl-1 font-medium text-gray-300" onClick={resetPasswordRedirect}>
+          <button
+            className="underline text-left text-sm pl-1 font-medium text-gray-300"
+            onClick={resetPasswordRedirect}
+            type="button"
+          >
             Forgot your password?
           </button>
         </div>
