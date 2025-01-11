@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import Logo from "../components/Header/Logo";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resendOTP, verifyEmail, login } from "../utils/authUtils";
-
+import ConfirmationModal from "../components/Auth/ConfirmationModal";
 
 const VerifyEmail: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +10,9 @@ const VerifyEmail: React.FC = () => {
   const { email, password } = location.state;
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -37,8 +40,16 @@ const VerifyEmail: React.FC = () => {
   };
 
   const handleResendOTP = async () => {
-    await resendOTP(email);
-    console.log("otp resent");
+    try {
+      await resendOTP(email);
+      console.log("otp resent");
+      setModalMessage("A new verification code has been sent to your email.")
+      setModalVisible(true);
+    } catch (error) {
+      console.error("Error resending OTP", error);
+      setModalMessage("There was an issue resending the verification email. Please try again later.")
+      setModalVisible(true);
+    }
   };
 
   const handleVerify = async () => {
@@ -50,19 +61,25 @@ const VerifyEmail: React.FC = () => {
 
       if (verified) {
         console.log("Email verified!");
-        
+
         // Login after successful verification
         const token = await login(email, password);
         console.log("Logged in successfully, token:", token);
-        
+
         navigate("/home");
       } else {
         console.log("Email not verified!");
+        setErrorMessage(
+          "The verification code you entered is incorrect. Please try again.",
+        );
       }
     } catch (error) {
       console.error("Error verifying email or logging in:", error);
+      setErrorMessage("Something went wrong, please try again.");
     }
   };
+
+  const handleModalClose = () => setModalVisible(false);
 
   return (
     <div className="bg-background h-screen w-full flex flex-col justify-center items-center">
@@ -90,6 +107,11 @@ const VerifyEmail: React.FC = () => {
             />
           ))}
         </div>
+        {errorMessage && (
+          <p className="text-red-500 text-xs -mt-2 w-72 text-center">
+            {errorMessage}
+          </p>
+        )}
         <button
           className="mt-6 w-56 py-2 bg-transparent text-white border-silver border rounded-lg hover:bg-accent hover:border-accent transition"
           onClick={handleVerify}
@@ -103,6 +125,9 @@ const VerifyEmail: React.FC = () => {
           Resend Verification Email
         </button>
       </div>
+      {modalVisible && (
+        <ConfirmationModal message={modalMessage} onClose={handleModalClose}/>
+      )} 
     </div>
   );
 };
