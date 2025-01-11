@@ -15,7 +15,7 @@ const Header: React.FC = () => {
       <Logo clickable={true} size={48}/>
       <div className="flex-row gap-1 items-center hidden md:flex lg:gap-4">
         {/* This div is hidden on small screens */}
-        <HeaderButton linkName="home" buttonName="Home" />
+        <HeaderButton linkName="/" buttonName="Home" />
         <HeaderButton linkName="pricing" buttonName="Pricing" />
         <HeaderButton linkName="blog" buttonName="Blog" />
       </div>
