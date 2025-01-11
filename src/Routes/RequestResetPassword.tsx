@@ -4,7 +4,7 @@ import { sendResetPasswordLink } from "../utils/authUtils";
 import { AxiosError } from "axios";
 import ConfirmationModal from "../components/Auth/ConfirmationModal";
 
-const ResetPassword: React.FC = () => {
+const RequestResetPassword: React.FC = () => {
   const [email, setEmail] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -76,4 +76,4 @@ const ResetPassword: React.FC = () => {
   );
 };
 
-export default ResetPassword;
+export default RequestResetPassword;
