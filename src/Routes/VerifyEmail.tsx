@@ -39,6 +39,21 @@ const VerifyEmail: React.FC = () => {
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasteData = e.clipboardData.getData("Text");
+    if (!/^\d{6}$/.test(pasteData)) return; // Ensure the pasted value is exactly 6 digits
+  
+    const newOtp = pasteData.split("").slice(0, 6); // Split the value into an array of single characters
+    setOtp(newOtp);
+  
+    // Automatically focus the next empty input field after filling the values
+    newOtp.forEach((_, idx) => {
+      if (inputRefs.current[idx]) {
+        inputRefs.current[idx]?.focus();
+      }
+    });
+  };
+
   const handleResendOTP = async () => {
     try {
       await resendOTP(email);
@@ -103,6 +118,7 @@ const VerifyEmail: React.FC = () => {
               maxLength={1}
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
+              onPaste={index === 0 ? handlePaste : undefined}
               className="w-12 h-12 text-center text-xl border border-gray-500 rounded-md outline-none focus:border-silver focus:ring-1 focus:ring-silver bg-transparent text-white leading-[3rem] font-medium"
             />
           ))}
