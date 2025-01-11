@@ -37,7 +37,7 @@ export async function signup(email: string, password: string): Promise<User> {
     if (axios.isAxiosError(error) && error.response?.data) {
       // Check if backend returned validation errors
       const validationErrors = error.response.data.errors;
-       if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+      if (Array.isArray(validationErrors) && validationErrors.length > 0) {
         throw new Error(validationErrors[0].msg); // Use the first error message
       }
       throw new Error(error.response.data.message || "Signup failed");
@@ -57,9 +57,9 @@ export async function verifyEmail(
   otp: string,
 ): Promise<boolean> {
   try {
-    const response = await api.post<ApiResponse<null>>( '/verify-email', { 
-      email, 
-      otp 
+    const response = await api.post<ApiResponse<null>>("/verify-email", {
+      email,
+      otp,
     });
 
     return response.status === 200; // Return true if status is 200 OK
@@ -80,8 +80,8 @@ export async function verifyEmail(
  */
 export async function resendOTP(email: string): Promise<boolean> {
   try {
-    const response = await api.post<ApiResponse<null>>('/resend-otp', {
-      email 
+    const response = await api.post<ApiResponse<null>>("/resend-otp", {
+      email,
     });
 
     return response.status === 200; // True if request succeeds
@@ -103,7 +103,7 @@ export async function resendOTP(email: string): Promise<boolean> {
  */
 export async function login(email: string, password: string): Promise<void> {
   try {
-    const response = await api.post('/login', { email, password });
+    const response = await api.post("/login", { email, password });
 
     if (response.status === 200) {
       console.log("Login successful!");
@@ -135,7 +135,7 @@ export async function getUserFromSession(): Promise<User> {
 }
 /**
  * Logout user
- * 
+ * @returns {Promise<void>} Response from the backend
  */
 export async function logout(): Promise<void> {
   try {
@@ -146,5 +146,24 @@ export async function logout(): Promise<void> {
       console.error(error);
     }
     throw new Error("Failed to logout user");
+  }
+}
+
+/**
+ * Email a user with reset password link
+ * @returns {Promise<void>} Response from the backend
+ */
+export async function sendResetPasswordLink(email: string): Promise<void> {
+  try {
+    await api.post("/reset-password/request", {
+      email,
+    });
+
+    console.log("Reset password link sent succesfully");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      console.error(error);
+    }
+    throw new Error("Failed to send reset password link");
   }
 }
