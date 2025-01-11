@@ -10,7 +10,7 @@ const ResetPassword: React.FC = () => {
   const token = searchParams.get("token"); // Extract the token from URL
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const ResetPassword: React.FC = () => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      setMessage("Passwords do not match");
+      setErrorMessage("Passwords do not match");
       return;
     }
     try {
@@ -28,9 +28,9 @@ const ResetPassword: React.FC = () => {
       setModalVisible(true);
     } catch (error) {
         if (error instanceof AxiosError) {
-            setMessage("An error occurred. Please try again.");
+            setErrorMessage("An error occurred. Please try again.");
         } else {
-            setMessage("An error occurred. Please try again.");
+            setErrorMessage("An error occurred. Please try again.");
         }
     }
   };
@@ -57,7 +57,7 @@ const ResetPassword: React.FC = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="border border-zinc-600 bg-[#1A1C2999] placeholder-gray-300 p-3 rounded-lg w-72 focus:outline-accent"
         />
-        {message && <p className="text-red-500 text-xs -mt-2">{message}</p>}
+        {errorMessage && <p className="text-red-500 text-xs -mt-2">{errorMessage}</p>}
         <button
           type="submit"
           className="bg-accent text-white py-2 px-4 rounded-lg mt-2 hover:bg-accentHover"
