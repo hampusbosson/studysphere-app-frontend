@@ -167,3 +167,19 @@ export async function sendResetPasswordLink(email: string): Promise<void> {
     throw new Error("Failed to send reset password link");
   }
 }
+
+export async function resetPassword(token: string | null, newPassword: string): Promise<void> {
+  try {
+    await api.post("/reset-password", {
+      token,
+      newPassword
+    });
+
+    console.log("Password reset succesfully");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      console.error(error);
+    }
+    throw new Error("Failed to reset password");
+  }
+}
