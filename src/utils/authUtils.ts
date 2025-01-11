@@ -101,13 +101,16 @@ export async function resendOTP(email: string): Promise<boolean> {
  * @param {string} password - User's password
  * @returns {Promise<{ token: string }>} Response from the backend
  */
-export async function login(email: string, password: string): Promise<void> {
+export async function login(email: string, password: string): Promise< string > {
   try {
     const response = await api.post("/login", { email, password });
 
     if (response.status === 200) {
       console.log("Login successful!");
     }
+    
+    console.log(response.data.token);
+    return response.data.token;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response?.data) {
       console.error("Backend error:", error.response.data.message);
