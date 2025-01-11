@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "../App";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignUpPage";
@@ -8,27 +8,61 @@ import HomePage from "./HomePage";
 import RequestResetPassword from "./RequestResetPassword";
 import ResetPassword from "./ResetPassword";
 import ProtectedRoute from "./ProtectedRoute";
-import useAuth from "../context/useAuth";
-
+import GuestRoute from "./GuestRoute";
 
 const AppRoutes: React.FC = () => {
-  const { isLoggedIn } = useAuth();
-
   return (
     <BrowserRouter>
       <Routes>
-                {/* Redirect base URL to /home if user is logged in */}
+        {/* Redirect base URL to /home if user is logged in */}
         <Route
           path="/"
           element={
-            isLoggedIn ? <Navigate to="/home" replace /> : <App />
+            <GuestRoute>
+              <App />
+            </GuestRoute>
           }
         />
-        <Route path="login" element={<LoginPage />}/>
-        <Route path="signup" element={<SignupPage />}/> 
-        <Route path="verify" element={<VerifyEmail />}></Route>
-        <Route path="reset" element={<RequestResetPassword />}></Route>
-        <Route path="reset-password" element={<ResetPassword />} />
+        <Route
+          path="login"
+          element={
+            <GuestRoute>
+              <LoginPage />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="signup"
+          element={
+            <GuestRoute>
+              <SignupPage />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="verify"
+          element={
+            <GuestRoute>
+              <VerifyEmail />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="reset"
+          element={
+            <GuestRoute>
+              <RequestResetPassword />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="reset-password"
+          element={
+            <GuestRoute>
+              <ResetPassword />
+            </GuestRoute>
+          }
+        />
         <Route
           path="home"
           element={
