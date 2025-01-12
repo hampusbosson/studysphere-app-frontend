@@ -32,6 +32,8 @@ const HeaderLoggedIn: React.FC = () => {
     };
   }, [isModalOpen, handleClickOutside]);
 
+  const firstLetterEmail = user?.email.charAt(0).toUpperCase();
+
   return (
     <div className="header flex flex-row items-center p-2 px-4 border-gray-800 border-b justify-between">
       <div className="flex flex-row gap-4">
@@ -39,7 +41,7 @@ const HeaderLoggedIn: React.FC = () => {
         <button>button2</button>
         <button>button3</button>
       </div>
-      <ProfileButton firstLetterEmail="H" onPress={openModal} />
+      <ProfileButton firstLetterEmail={firstLetterEmail} onPress={openModal} />
       {isModalOpen && (
         <div
           ref={modalRef}

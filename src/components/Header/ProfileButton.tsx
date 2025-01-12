@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ProfileButtonProps {
-    firstLetterEmail: string;
+    firstLetterEmail: string | undefined;
     onPress: () => void;
 }
 
