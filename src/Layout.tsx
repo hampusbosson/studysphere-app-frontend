@@ -18,7 +18,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Header />
       )}
       <div className="mt-10">{children}</div>
-      <Footer />
+      {isLoggedIn ? (
+        null 
+      ) : (
+        <Footer /> 
+      )}
+      
     </div>
   );
 }
