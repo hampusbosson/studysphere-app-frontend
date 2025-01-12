@@ -11,21 +11,12 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isLoggedIn } = useAuth();
   return (
-    <div className="flex flex-col justify-between h-screen bg-background">
-      {isLoggedIn ? (
-        <HeaderLoggedIn />
-      ) : (
-        <Header />
-      )}
-      <div className="mt-10">{children}</div>
-      {isLoggedIn ? (
-        null 
-      ) : (
-        <Footer /> 
-      )}
-      
+    <div className="flex flex-col h-screen bg-background">
+      {isLoggedIn ? <HeaderLoggedIn /> : <Header />}
+      <div className="flex-grow">{children}</div>
+      {isLoggedIn ? null : <Footer />}
     </div>
   );
-}
+};
 
 export default Layout;
