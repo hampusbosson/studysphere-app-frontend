@@ -10,6 +10,8 @@ import { getClasses, Class } from "../utils/classUtils";
 const HomePage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [classes, setClasses] = useState<Class[]>([])
+  const [activeClass, setActiveClass] = useState('');
+
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -33,22 +35,17 @@ const HomePage: React.FC = () => {
     <Layout>
       <div className="bg-background h-full grid grid-cols-6">
         <div className="col-span-1">
-          <SideBar classes={classes}/>
+          <SideBar classes={classes} setActiveClass={setActiveClass}/>
         </div>
-        <div className="col-span-5 flex flex-col justify-center items-center">
+        <div className="col-span-5 flex flex-row justify-between items-start p-8">
+          <h1 className="text-4xl font-semibold font-montserrat">{activeClass}</h1>
           <button
-            className="flex flex-row fixed right-8 top-20 items-center gap-2 bg-accent pl-3 pr-4 py-2 rounded-lg hover:bg-accentHover"
+            className="flex flex-row items-center gap-2 bg-accent pl-3 pr-4 py-2 rounded-lg hover:bg-accentHover"
             onClick={openModal}
           >
             {icons.plusIcon}
             <p className="font-semibold text-lg">New Class</p>
           </button>
-          <h1 className="text-4xl font-bold text-silver">
-            Welcome to StudySphere
-          </h1>
-          <p className="text-gray-300 mt-4 text-lg">
-            Master your studies with ease and efficiency.
-          </p>
         </div>
         {modalVisible && <NewClassModal onClose={closeModal} setClasses={setClasses}/>}
       </div>
