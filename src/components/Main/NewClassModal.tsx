@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import InputField from "../Auth/InputField";
+import { createClass } from "../../utils/classUtils";
+import { Class } from "../../utils/classUtils";
 
 interface NewClassModalProps {
   onClose: () => void;
-  setClasses: React.Dispatch<React.SetStateAction<string[]>>;
+  setClasses: React.Dispatch<React.SetStateAction<Class[]>>;
 }
 
 const NewClassModal: React.FC<NewClassModalProps> = ({
@@ -13,7 +15,7 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
   const [className, setClassName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleAddClass = (e: React.FormEvent) => {
+  const handleAddClass = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (className.trim() === "") {
@@ -21,9 +23,18 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
       return;
     }
 
-    setClasses((prevClasses) => [...prevClasses, className.trim()]);
-    setClassName("");
-    onClose();
+    try {
+        const newClass = await createClass(className);
+
+        setClasses((prevClasses) => [...prevClasses, newClass]);
+        setClassName("");
+        onClose();
+    } catch (error) {
+        console.error("Error creating class:", error);
+        setErrorMessage("Failed to create class, Please try again.");
+    }
+
+
   };
 
   return (
