@@ -1,15 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import Layout from "../Layout";
 import SideBar from "../components/Sidebar/Sidebar";
 import icons from "../assets/icons/icons";
 import NewClassModal from "../components/Main/NewClassModal";
+import { getClasses, Class } from "../utils/classUtils";
+
+
 
 const HomePage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [classes, setClasses] = useState<string[]>([])
+  const [classes, setClasses] = useState<Class[]>([])
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
+
+    // Fetch classes from the database on mount
+    useEffect(() => {
+      const fetchClasses = async () => {
+        try {
+          const userClasses = await getClasses();
+          setClasses(userClasses); // Update classes with fetched data
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      fetchClasses();
+    }, []);
+  
 
   return (
     <Layout>
