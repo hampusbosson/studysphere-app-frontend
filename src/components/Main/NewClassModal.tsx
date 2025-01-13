@@ -15,6 +15,10 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
   const [className, setClassName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const capitalizeClassName = (className: string) => {
+    return className.charAt(0).toUpperCase() + className.slice(1);
+  }
+
   const handleAddClass = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -24,7 +28,8 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
     }
 
     try {
-        const newClass = await createClass(className);
+        const newClassCapitalized = capitalizeClassName(className)
+        const newClass = await createClass(newClassCapitalized);
 
         setClasses((prevClasses) => [...prevClasses, newClass]);
         setClassName("");
