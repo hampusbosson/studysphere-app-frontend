@@ -43,4 +43,24 @@ export async function getClasses(): Promise<Class[]> {
     }
 }
 
+/**
+ * Rename a class
+ * @param {number}classId 
+ * @param {string}newClassName 
+ * @returns {Promise<Class>}
+ */
+export async function renameClass(classId: number, newClassName: string): Promise<Class> {
+    try {
+        const response = await api.post("/rename", {
+            classId,
+            newName: newClassName
+        });
+
+        return response.data.updatedClass;
+    } catch (error) {
+        console.error("Error renaming class:", error);
+        throw new Error("Failed to rename class");
+    }
+}
+
 
