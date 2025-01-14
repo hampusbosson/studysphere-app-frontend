@@ -22,6 +22,7 @@ const HomePage: React.FC = () => {
         try {
           const userClasses = await getClasses();
           setClasses(userClasses); // Update classes with fetched data
+          setActiveClass(userClasses[0].name);
         } catch (error) {
           console.error(error);
         }
@@ -35,7 +36,7 @@ const HomePage: React.FC = () => {
     <Layout>
       <div className="bg-background h-full grid grid-cols-6">
         <div className="col-span-1">
-          <SideBar classes={classes} setActiveClass={setActiveClass}/>
+          <SideBar classes={classes} setActiveClass={setActiveClass} setClasses={setClasses} activeClass={activeClass}/>
         </div>
         <div className="col-span-5 flex flex-row justify-between items-start p-8">
           <h1 className="text-4xl font-semibold font-montserrat">{activeClass}</h1>
