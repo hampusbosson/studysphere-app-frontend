@@ -64,19 +64,21 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
               {errorMessage}
             </p>
           )}
+          <div className="flex flex-row items-center justify-center gap-4 mt-2">
           <button
-            className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accentHover font-semibold transition mt-2"
+            onClick={onClose}
+            type="button"
+            className="px-5 py-2 rounded-lg hover:bg-gray-700 transition font-semibold"
+          >
+            Cancel
+          </button>
+          <button
+            className="px-5 py-2 bg-accent text-white rounded-lg hover:bg-accentHover font-semibold transition"
             type="submit"
           >
             Create
           </button>
-          <button
-            onClick={onClose}
-            type="button"
-            className="px-4 py-2 rounded-lg hover:bg-gray-700 transition font-semibold"
-          >
-            Cancel
-          </button>
+          </div>
         </form>
       </div>
     </div>
