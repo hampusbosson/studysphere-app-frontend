@@ -2,6 +2,7 @@ import { Class } from "../../utils/classUtils";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import icons from "../../assets/icons/icons";
 import { renameClass } from "../../utils/classUtils";
+import DeleteClassModal from "./DeleteClassModal";
 
 interface SideBarProps {
   classes: Class[];
@@ -16,10 +17,18 @@ const SideBar: React.FC<SideBarProps> = ({
   setActiveClass,
   activeClass,
 }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModalName, setDeleteModalName] = useState('');
   const [hoveredClass, setHoveredClass] = useState<string | null>(null);
   const [classInEdit, setClassInEdit] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({}); // Store refs for inputs
+
+  /*
+  const handleDeleteClick = (className: string) => {
+    
+  }
+  */
 
   const handleEditClick = (className: string) => {
     setClassInEdit(className);
@@ -30,7 +39,7 @@ const SideBar: React.FC<SideBarProps> = ({
 
     // Focus the input box after setting it to edit mode
     setTimeout(() => {
-    inputRefs.current[className]?.focus();
+      inputRefs.current[className]?.focus();
     }, 0);
   };
 
@@ -44,28 +53,32 @@ const SideBar: React.FC<SideBarProps> = ({
       return;
     }
 
-    const classToEdit = classes.find((classItem) => classItem.name === className);
+    const classToEdit = classes.find(
+      (classItem) => classItem.name === className,
+    );
     if (!classToEdit) {
-        console.error("Class not found");
-        return;
+      console.error("Class not found");
+      return;
     }
 
     try {
-        const renamedClass = await renameClass(parseInt(classToEdit.id), newClassName)
+      const renamedClass = await renameClass(
+        parseInt(classToEdit.id),
+        newClassName,
+      );
 
-        const updatedClasses = classes.map((classItem) =>
-            classItem.id === renamedClass.id
-              ? { ...classItem, name: renamedClass.name }
-              : classItem,
-          );
+      const updatedClasses = classes.map((classItem) =>
+        classItem.id === renamedClass.id
+          ? { ...classItem, name: renamedClass.name }
+          : classItem,
+      );
 
-          console.log(updatedClasses);
-          setClasses(updatedClasses);
-          setActiveClass(newClassName);
-          setClassInEdit(null); // Exit edit mode
-
+      console.log(updatedClasses);
+      setClasses(updatedClasses);
+      setActiveClass(newClassName);
+      setClassInEdit(null); // Exit edit mode
     } catch (error) {
-        console.error("Error renaming class:", error);
+      console.error("Error renaming class:", error);
     }
   };
 
@@ -97,6 +110,12 @@ const SideBar: React.FC<SideBarProps> = ({
     };
   }, [handleClickOutside]);
 
+  const openDeleteModal = (className: string) => {
+    setDeleteModalName(className);
+    setModalVisible(true);
+  }
+  const closeDeleteModal = () => setModalVisible(false);
+
   return (
     <div className="border-r border-gray-800 flex flex-col h-full p-4">
       <p className="font-bold text-lg mb-4">My Classes</p>
@@ -105,7 +124,9 @@ const SideBar: React.FC<SideBarProps> = ({
           <li
             key={index}
             className={`cursor-pointer flex flex-row justify-between ${
-                activeClass === classItem.name ? "text-white underline decoration-1" : "text-gray-300 hover:text-white"
+              activeClass === classItem.name
+                ? "text-white underline decoration-1"
+                : "text-gray-300 hover:text-white"
             }`}
             onClick={() => setActiveClass(classItem.name)}
             onMouseEnter={() => setHoveredClass(classItem.name)}
@@ -140,6 +161,7 @@ const SideBar: React.FC<SideBarProps> = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); // prevent triggering the class click
+                    openDeleteModal(classItem.name);
                   }}
                 >
                   {icons.deleteIcon}
@@ -149,6 +171,9 @@ const SideBar: React.FC<SideBarProps> = ({
           </li>
         ))}
       </ul>
+      {modalVisible && (
+        <DeleteClassModal className={deleteModalName} onClose={closeDeleteModal} />
+      )}
     </div>
   );
 };
