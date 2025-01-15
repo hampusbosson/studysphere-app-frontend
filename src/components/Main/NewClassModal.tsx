@@ -17,7 +17,7 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
 
   const capitalizeClassName = (className: string) => {
     return className.charAt(0).toUpperCase() + className.slice(1);
-  }
+  };
 
   const handleAddClass = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,23 +28,27 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
     }
 
     try {
-        const newClassCapitalized = capitalizeClassName(className)
-        const newClass = await createClass(newClassCapitalized);
+      const newClassCapitalized = capitalizeClassName(className);
+      const newClass = await createClass(newClassCapitalized);
 
-        setClasses((prevClasses) => [...prevClasses, newClass]);
-        setClassName("");
-        onClose();
+      setClasses((prevClasses) => [...prevClasses, newClass]);
+      setClassName("");
+      onClose();
     } catch (error) {
-        console.error("Error creating class:", error);
-        setErrorMessage("Failed to create class, Please try again.");
+      console.error("Error creating class:", error);
+      setErrorMessage("Failed to create class, Please try again.");
     }
-
-
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-background border-gray-400 border w-96 p-6 rounded-lg shadow-lg flex flex-col items-center">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-background border-gray-600 border w-96 p-6 rounded-lg shadow-lg flex flex-col items-center"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 className="text-xl font-bold">Whats the name of your class?</h2>
         <form
           className="flex flex-col justify-end gap-4 mt-4"
@@ -56,7 +60,9 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
             onValueChange={setClassName}
           />
           {errorMessage && (
-            <p className="text-red-500 text-xs text-left -mt-2 -mb-2">{errorMessage}</p>
+            <p className="text-red-500 text-xs text-left -mt-2 -mb-2">
+              {errorMessage}
+            </p>
           )}
           <button
             className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accentHover font-semibold transition mt-2"
