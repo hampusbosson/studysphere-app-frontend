@@ -1,7 +1,7 @@
 import { Class } from "../../utils/classUtils";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import icons from "../../assets/icons/icons";
-import { renameClass } from "../../utils/classUtils";
+import { renameClass, deleteClass } from "../../utils/classUtils";
 import DeleteClassModal from "./DeleteClassModal";
 
 interface SideBarProps {
@@ -18,17 +18,40 @@ const SideBar: React.FC<SideBarProps> = ({
   activeClass,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [deleteModalName, setDeleteModalName] = useState('');
+  const [deleteModalName, setDeleteModalName] = useState("");
   const [hoveredClass, setHoveredClass] = useState<string | null>(null);
   const [classInEdit, setClassInEdit] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({}); // Store refs for inputs
 
-  /*
-  const handleDeleteClick = (className: string) => {
-    
-  }
-  */
+  const handleDelete = async () => {
+    const classToDelete = classes.find(
+      (classItem) => classItem.name === deleteModalName,
+    );
+    if (!classToDelete) {
+      console.error("Class not found");
+      return;
+    }
+
+    try {
+      await deleteClass(parseInt(classToDelete.id));
+
+      const updatedClasses = classes.filter(
+        (classItem) => classItem.id !== classToDelete.id,
+      );
+
+      setClasses(updatedClasses);
+
+      closeDeleteModal();
+      
+      //reset activeClass if it was the one deleted
+      if (activeClass === deleteModalName) {
+        setActiveClass(updatedClasses.length > 0 ? updatedClasses[0].name : "");
+      }
+    } catch (error) {
+      console.error("Error deleting class:", error);
+    }
+  };
 
   const handleEditClick = (className: string) => {
     setClassInEdit(className);
@@ -113,7 +136,7 @@ const SideBar: React.FC<SideBarProps> = ({
   const openDeleteModal = (className: string) => {
     setDeleteModalName(className);
     setModalVisible(true);
-  }
+  };
   const closeDeleteModal = () => setModalVisible(false);
 
   return (
@@ -172,7 +195,11 @@ const SideBar: React.FC<SideBarProps> = ({
         ))}
       </ul>
       {modalVisible && (
-        <DeleteClassModal className={deleteModalName} onClose={closeDeleteModal} />
+        <DeleteClassModal
+          className={deleteModalName}
+          onClose={closeDeleteModal}
+          handleDelete={handleDelete}
+        />
       )}
     </div>
   );
