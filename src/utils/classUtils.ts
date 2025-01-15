@@ -63,4 +63,22 @@ export async function renameClass(classId: number, newClassName: string): Promis
     }
 }
 
+/**
+ * Delete a class
+ * @param {number}classId 
+ * @returns {Promise<Class>}
+ */
+export async function deleteClass(classId: number): Promise<Class> {
+    try {
+        const response = await api.post("/delete", {
+            classId,
+        });
+
+        return response.data.deleteClass
+    } catch (error) {
+        console.error("Error deleting class:", error);
+        throw new Error("Failed to delete class");
+    }
+}
+
 
