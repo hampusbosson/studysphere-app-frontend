@@ -3,12 +3,13 @@ import Layout from "../Layout";
 import SideBar from "../components/Sidebar/Sidebar";
 import icons from "../assets/icons/icons";
 import NewClassModal from "../components/Main/NewClassModal";
+import ContentBox from "../components/ClassContent/ContentBox";
 import { getClasses, Class } from "../utils/classUtils";
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [classes, setClasses] = useState<Class[]>([]);
-  const [activeClass, setActiveClass] = useState("");
+  const [activeClass, setActiveClass] = useState<Class | null>(classes[0]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -19,7 +20,7 @@ const HomePage: React.FC = () => {
       try {
         const userClasses = await getClasses();
         setClasses(userClasses); // Update classes with fetched data
-        setActiveClass(userClasses[0].name);
+        setActiveClass(userClasses[0])
       } catch (error) {
         console.error(error);
       }
@@ -39,17 +40,22 @@ const HomePage: React.FC = () => {
             activeClass={activeClass}
           />
         </div>
-        <div className="col-span-5 flex flex-row justify-between items-start p-8">
-          <h1 className="text-4xl font-semibold font-montserrat">
-            {activeClass}
-          </h1>
-          <button
-            className="flex flex-row items-center gap-2 bg-accent pl-3 pr-4 py-2 rounded-lg hover:bg-accentHover"
-            onClick={openModal}
-          >
-            {icons.plusIcon}
-            <p className="font-semibold text-lg">New Class</p>
-          </button>
+        <div className="col-span-5 p-8">
+          <div className="flex flex-row justify-between items-start">
+            <h1 className="text-4xl font-semibold font-montserrat">
+              {activeClass ? activeClass.name : null}
+            </h1>
+            <button
+              className="flex flex-row items-center gap-2 bg-accent pl-3 pr-4 py-2 rounded-lg hover:bg-accentHover"
+              onClick={openModal}
+            >
+              {icons.plusIcon}
+              <p className="font-semibold text-lg">New Class</p>
+            </button>
+          </div>
+          <div className="mt-4">
+            <ContentBox classItem={activeClass}/>
+          </div>
         </div>
         {isModalOpen && (
           <NewClassModal onClose={closeModal} setClasses={setClasses} />

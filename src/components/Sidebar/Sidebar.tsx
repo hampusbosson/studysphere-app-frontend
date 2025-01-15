@@ -6,9 +6,9 @@ import DeleteClassModal from "./DeleteClassModal";
 
 interface SideBarProps {
   classes: Class[];
-  setActiveClass: React.Dispatch<React.SetStateAction<string>>;
+  setActiveClass: React.Dispatch<React.SetStateAction<Class | null>>;
   setClasses: React.Dispatch<React.SetStateAction<Class[]>>;
-  activeClass: string;
+  activeClass: Class | null;
 }
 
 const SideBar: React.FC<SideBarProps> = ({
@@ -45,8 +45,8 @@ const SideBar: React.FC<SideBarProps> = ({
       closeDeleteModal();
       
       //reset activeClass if it was the one deleted
-      if (activeClass === deleteModalName) {
-        setActiveClass(updatedClasses.length > 0 ? updatedClasses[0].name : "");
+      if (activeClass && activeClass.name === deleteModalName) {
+        setActiveClass(updatedClasses.length > 0 ? updatedClasses[0] : null);
       }
     } catch (error) {
       console.error("Error deleting class:", error);
@@ -98,7 +98,7 @@ const SideBar: React.FC<SideBarProps> = ({
 
       console.log(updatedClasses);
       setClasses(updatedClasses);
-      setActiveClass(newClassName);
+      setActiveClass(classToEdit);
       setClassInEdit(null); // Exit edit mode
     } catch (error) {
       console.error("Error renaming class:", error);
@@ -147,11 +147,11 @@ const SideBar: React.FC<SideBarProps> = ({
           <li
             key={index}
             className={`cursor-pointer flex flex-row justify-between ${
-              activeClass === classItem.name
+              activeClass && activeClass.name === classItem.name
                 ? "text-white underline decoration-1"
                 : "text-gray-300 hover:text-white"
             }`}
-            onClick={() => setActiveClass(classItem.name)}
+            onClick={() => setActiveClass(classItem)}
             onMouseEnter={() => setHoveredClass(classItem.name)}
             onMouseLeave={() => setHoveredClass(null)}
           >
