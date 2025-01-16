@@ -33,7 +33,7 @@ const InputField: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         onChange={(e) => onValueChange(e.target.value)} // Handle value changes
         onKeyPress={handleKeyPress} // Handle Enter key press
-        className="border border-zinc-600 bg-[#1A1C2999] placeholder-gray-300 p-3 rounded-lg w-72 focus:outline-accent"
+        className="border border-zinc-600 bg-[#1A1C2999] placeholder-gray-400 p-3 rounded-lg w-72 focus:outline-accent"
       />
     </div>
   );
