@@ -42,7 +42,7 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-50"
       onClick={onClose}
     >
       <div
@@ -65,19 +65,19 @@ const NewClassModal: React.FC<NewClassModalProps> = ({
             </p>
           )}
           <div className="flex flex-row items-center justify-center gap-4 mt-2">
-          <button
-            onClick={onClose}
-            type="button"
-            className="px-5 py-2 rounded-lg hover:bg-gray-700 transition font-semibold"
-          >
-            Cancel
-          </button>
-          <button
-            className="px-5 py-2 bg-accent text-white rounded-lg hover:bg-accentHover font-semibold transition"
-            type="submit"
-          >
-            Create
-          </button>
+            <button
+              onClick={onClose}
+              type="button"
+              className="px-5 py-2 rounded-lg hover:bg-gray-700 transition font-semibold"
+            >
+              Cancel
+            </button>
+            <button
+              className="px-5 py-2 bg-accent text-white rounded-lg hover:bg-accentHover font-semibold transition"
+              type="submit"
+            >
+              Create
+            </button>
           </div>
         </form>
       </div>
