@@ -9,14 +9,11 @@ interface DeleteClassModalProps {
 const DeleteClassModal: React.FC<DeleteClassModalProps> = ({
   className,
   onClose,
-  handleDelete
+  handleDelete,
 }) => {
-
-
-
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-50"
       onClick={onClose}
     >
       <div
@@ -34,7 +31,10 @@ const DeleteClassModal: React.FC<DeleteClassModalProps> = ({
           >
             Cancel
           </button>
-          <button className="bg-red-700 rounded-lg py-1 px-4 font-medium hover:bg-red-800" onClick={handleDelete}> 
+          <button
+            className="bg-red-700 rounded-lg py-1 px-4 font-medium hover:bg-red-800"
+            onClick={handleDelete}
+          >
             Delete
           </button>
         </div>
