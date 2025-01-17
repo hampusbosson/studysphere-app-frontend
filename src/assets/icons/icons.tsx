@@ -401,7 +401,7 @@ const icons = {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke=""
+      stroke={stroke}
       className={`size-6 stroke-${stroke}`}
     >
       <path
@@ -417,7 +417,7 @@ const icons = {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke=""
+      stroke={stroke}
       className={`size-6 stroke-${stroke}`}
     >
       <path

@@ -28,7 +28,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
     
         try {
           const newLecture = await createLecture(classItem?.id, subjectName.trim());
-          setLectures((prev) => [...prev, newLecture]); // update lectures state
+          setLectures((prev) => [...prev, newLecture]); // update lectures 
           onClose();
         } catch (error) {
           console.error("Error creating lecture:", error);
@@ -73,7 +73,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
               >
                 <div className="flex items-center gap-2">
                   {icons.linkIcon(
-                    activeButton === "url" ? "white" : "gray-300",
+                    activeButton === "url" ? "white" : "lightgray",
                   )}
                   <span>URL</span>
                 </div>
@@ -88,7 +88,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
               >
                 <div className="flex items-center gap-2">
                   {icons.cloudIcon(
-                    activeButton === "upload" ? "white" : "gray-300",
+                    activeButton === "upload" ? "white" : "lightgray",
                   )}
                   <span>Upload</span>
                 </div>
