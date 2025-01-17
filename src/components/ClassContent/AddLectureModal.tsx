@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { Class } from "../../utils/classUtils";
 import InputField from "../Auth/InputField";
 import icons from "../../assets/icons/icons";
+import { createLecture } from "../../utils/lectureUtils";
+import { Lecture } from "../../utils/lectureUtils";
 
 interface AddSubjectModalProps {
   classItem: Class | null;
   onClose: () => void;
+  setLectures: React.Dispatch<React.SetStateAction<Lecture[]>>
 }
 
-const AddLectureModal: React.FC<AddSubjectModalProps> = ({ onClose }) => {
+const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, setLectures }) => {
   const [subjectName, setSubjectName] = useState("");
   const [url, setUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,18 +25,16 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ onClose }) => {
       return;
     }
 
-    /*
-        try {
-          const newClass = await createClass(newClassCapitalized);
     
-          setClasses((prevClasses) => [...prevClasses, newClass]);
-          setClassName("");
+        try {
+          const newLecture = await createLecture(classItem?.id, subjectName.trim());
+          setLectures((prev) => [...prev, newLecture]); // update lectures state
           onClose();
         } catch (error) {
-          console.error("Error creating class:", error);
-          setErrorMessage("Failed to create class, Please try again.");
+          console.error("Error creating lecture:", error);
+          setErrorMessage("Failed to create lecture, Please try again.");
         }
-          */
+          
   };
 
   return (
@@ -125,7 +126,10 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ onClose }) => {
                   <span className="px-4">or</span>
                   <span className="flex-grow h-[1px] bg-gray-700"></span>
                 </div>
-                <button className="pr-5 pl-4 py-2 bg-accent text-white rounded-lg hover:bg-accentHover font-semibold transition flex flex-row gap-2 items-center mt-2">
+                <button
+                  className="pr-5 pl-4 py-2 bg-accent text-white rounded-lg hover:bg-accentHover font-semibold transition flex flex-row gap-2 items-center mt-2"
+                  type="button"
+                >
                   {icons.uploadIcon}
                   Choose file
                 </button>
