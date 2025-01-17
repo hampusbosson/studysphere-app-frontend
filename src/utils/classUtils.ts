@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Lecture } from "./lectureUtils";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api/class", // backend URL
@@ -8,6 +9,7 @@ const api = axios.create({
 export interface Class {
     id: string;
     name: string;
+    lectures: Lecture[] | null;
 }
 
 /**
