@@ -23,6 +23,21 @@ const SideBar: React.FC<SideBarProps> = ({
   const [classInEdit, setClassInEdit] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({}); // Store refs for inputs
+  const [listOpen, setListOpen] = useState<Record<string, boolean>>();
+
+  const openList = (className: string) => {
+    setListOpen((prev) => ({
+      ...prev,
+      [className]: true,
+    }));
+  };
+
+  const closeList = (className: string) => {
+    setListOpen((prev) => ({
+      ...prev,
+      [className]: false,
+    }));
+  };
 
   const handleDelete = async () => {
     const classToDelete = classes.find(
@@ -43,7 +58,7 @@ const SideBar: React.FC<SideBarProps> = ({
       setClasses(updatedClasses);
 
       closeDeleteModal();
-      
+
       //reset activeClass if it was the one deleted
       if (activeClass && activeClass.name === deleteModalName) {
         setActiveClass(updatedClasses.length > 0 ? updatedClasses[0] : null);
@@ -96,9 +111,8 @@ const SideBar: React.FC<SideBarProps> = ({
           : classItem,
       );
 
-      console.log(updatedClasses);
       setClasses(updatedClasses);
-      setActiveClass(classToEdit);
+      setActiveClass(renamedClass);
       setClassInEdit(null); // Exit edit mode
     } catch (error) {
       console.error("Error renaming class:", error);
@@ -156,20 +170,45 @@ const SideBar: React.FC<SideBarProps> = ({
             onMouseLeave={() => setHoveredClass(null)}
           >
             {classInEdit === classItem.name ? (
-              <form
-                onSubmit={(e) => handleEdit(e, classItem.name)}
-                onClick={(e) => e.stopPropagation()} // Prevent click from propagating
-              >
-                <input
-                  ref={(el) => (inputRefs.current[classItem.name] = el)}
-                  type="text"
-                  value={editValues[classItem.name] || ""} // Use specific value for this class
-                  onChange={(e) => handleChange(e, classItem.name)}
-                  className="bg-transparent border-b border-gray-600 text-white focus:outline-none"
-                />
-              </form>
+              <div className="flex flex-row gap-1 items-center">
+                {icons.chevronRight()}
+                <form
+                  onSubmit={(e) => handleEdit(e, classItem.name)}
+                  onClick={(e) => e.stopPropagation()} // Prevent click from propagating
+                >
+                  <input
+                    ref={(el) => (inputRefs.current[classItem.name] = el)}
+                    type="text"
+                    value={editValues[classItem.name] || ""} // Use specific value for this class
+                    onChange={(e) => handleChange(e, classItem.name)}
+                    className="bg-transparent border-b border-gray-600 text-white focus:outline-none w-[90%]"
+                  />
+                </form>
+              </div>
             ) : (
-              <span>{classItem.name}</span> // Display class name if not in edit mode
+              <div className="flex flex-row gap-1 items-center">
+                <button
+                  type="button"
+                  className="text-gray-500 hover:text-white"
+                  onClick={(e) => {
+                    e.stopPropagation(); //prevent triggering the classclick
+                    if (listOpen?.[classItem.name]) {
+                      closeList(classItem.name);
+                    } else {
+                      openList(classItem.name);
+                    }
+                  }}
+                >
+                  <div
+                    className={`transform transition-transform duration-200 ${
+                      listOpen?.[classItem.name] ? "rotate-90" : "rotate-0"
+                    }`}
+                  >
+                    {icons.chevronRight()}
+                  </div>
+                </button>
+                <span>{classItem.name}</span>
+              </div>
             )}
             {hoveredClass === classItem.name && (
               <div className="flex flex-row gap-2 -mr-2">
