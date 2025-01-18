@@ -9,7 +9,7 @@ const api = axios.create({
 export interface Class {
     id: string;
     name: string;
-    lectures: Lecture[] | null;
+    lectures?: Lecture[];
 }
 
 /**
