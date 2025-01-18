@@ -160,18 +160,25 @@ const SideBar: React.FC<SideBarProps> = ({
         {classes.map((classItem, index) => (
           <li
             key={index}
-            className={`cursor-pointer flex flex-row justify-between ${
+            className={`cursor-pointer flex flex-col justify-between font-semibold ${
               activeClass && activeClass.name === classItem.name
-                ? "text-white underline decoration-1"
+                ? "text-white decoration-1"
                 : "text-gray-300 hover:text-white"
             }`}
             onClick={() => setActiveClass(classItem)}
             onMouseEnter={() => setHoveredClass(classItem.name)}
             onMouseLeave={() => setHoveredClass(null)}
           >
+            <div className="flex flex-row justify-between ">
             {classInEdit === classItem.name ? (
               <div className="flex flex-row gap-1 items-center">
-                {icons.chevronRight()}
+                <div
+                  className={`transform transition-transform duration-200 ${
+                    listOpen?.[classItem.name] ? "rotate-90" : "rotate-0"
+                  }`}
+                >
+                  {icons.chevronRight()}
+                </div>
                 <form
                   onSubmit={(e) => handleEdit(e, classItem.name)}
                   onClick={(e) => e.stopPropagation()} // Prevent click from propagating
@@ -229,6 +236,20 @@ const SideBar: React.FC<SideBarProps> = ({
                   {icons.deleteIcon}
                 </button>
               </div>
+            )}
+            </div>
+            
+            {listOpen?.[classItem.name] && classItem.lectures && classItem.lectures?.length > 0 && (
+              <ul className="ml-3 mt-2 flex flex-col gap-2 border-b border-gray-700 pb-2 w-[90%]">
+                {classItem.lectures?.map((lectureItem, index) => (
+                  <li key={index} className="text-white text-sm font-light">
+                    <div className="flex flex-row gap-1 items-center">
+                      <p>-</p>
+                      <p>{lectureItem.title}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
           </li>
         ))}
