@@ -2,6 +2,7 @@ import React from "react";
 import icons from "../../assets/icons/icons";
 import { Class } from "../../utils/classUtils";
 import { Lecture } from "../../utils/lectureUtils";
+import { useNavigate } from "react-router-dom";
 
 interface ClassItemProps {
   classItem: Class;
@@ -45,7 +46,19 @@ const ClassItem: React.FC<ClassItemProps> = ({
   closeList,
 }) => {
 
+  const navigate = useNavigate();
+
   const currentLectures = classItem ? lectures[parseInt(classItem.id)] || [] : [];
+
+  const handleClassClick = (classItem: Class) => {
+    setActiveClass(classItem);
+    navigate('/home');
+  }
+
+  const handleLectureClick = (lectureId: string) => {
+    
+    navigate(`/home/lecture/${lectureId}`);
+  };
 
   return (
     <li
@@ -54,7 +67,7 @@ const ClassItem: React.FC<ClassItemProps> = ({
           ? "text-white decoration-1"
           : "text-gray-300 hover:text-white"
       }`}
-      onClick={() => setActiveClass(classItem)}
+      onClick={() => handleClassClick(classItem)}
       onMouseEnter={() => setHoveredClass(classItem.name)}
       onMouseLeave={() => setHoveredClass(null)}
     >
@@ -136,8 +149,11 @@ const ClassItem: React.FC<ClassItemProps> = ({
           }`}
         >
           {currentLectures?.map((lectureItem, index) => (
-            <li key={index} className="text-white text-sm font-light">
-              <div className="flex flex-row gap-1 items-center">
+            <li key={index} className="text-white text-sm font-light hover:font-medium">
+              <div className="flex flex-row gap-1 items-center" onClick={(e) => {
+                e.stopPropagation()
+                handleLectureClick(lectureItem.id)
+              }}>
                 <p>-</p>
                 <p>{lectureItem.title}</p>
               </div>
