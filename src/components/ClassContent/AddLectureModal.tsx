@@ -8,7 +8,7 @@ import { Lecture } from "../../utils/lectureUtils";
 interface AddSubjectModalProps {
   classItem: Class | null;
   onClose: () => void;
-  setLectures: React.Dispatch<React.SetStateAction<Lecture[]>>
+  setLectures: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
 }
 
 const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, setLectures }) => {
@@ -17,24 +17,31 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
   const [errorMessage, setErrorMessage] = useState("");
   const [activeButton, setActiveButton] = useState("url");
 
-  const handleAddSubject = async (e: React.FormEvent) => {
+  const handleAddLecture = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (subjectName.trim() === "") {
       setErrorMessage("Lecture name cannot be empty");
       return;
     }
-
-    
-        try {
-          const newLecture = await createLecture(classItem?.id, subjectName.trim());
-          setLectures((prev) => [...prev, newLecture]); // update lectures 
-          onClose();
-        } catch (error) {
-          console.error("Error creating lecture:", error);
-          setErrorMessage("Failed to create lecture, Please try again.");
-        }
-          
+  
+    try {
+      const newLecture = await createLecture(classItem?.id, subjectName.trim());
+      if (!classItem?.id) {
+        throw new Error("Class ID is undefined");
+      }
+  
+      // Update the lectures for the specific class
+      setLectures((prev) => ({
+        ...prev,
+        [classItem.id]: [...(prev[parseInt(classItem.id)] || []), newLecture],
+      }));
+  
+      onClose(); // Close the modal
+    } catch (error) {
+      console.error("Error creating lecture:", error);
+      setErrorMessage("Failed to create lecture, Please try again.");
+    }
   };
 
   return (
@@ -51,7 +58,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
         </h2>
         <form
           className="flex flex-col gap-4 mt-4 w-full justify-center items-center"
-          onSubmit={handleAddSubject}
+          onSubmit={handleAddLecture}
         >
           <InputField
             label="Lecture Title"

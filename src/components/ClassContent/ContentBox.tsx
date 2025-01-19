@@ -1,38 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Class } from "../../utils/classUtils";
 import icons from "../../assets/icons/icons";
 import AddLectureModal from "./AddLectureModal";
-import { Lecture, getLecturesForClass } from "../../utils/lectureUtils";
+import { Lecture } from "../../utils/lectureUtils";
 
 interface ContentBoxProps {
   classItem: Class | null;
+  lectures?: Record<number, Lecture[]>
+  setLectures: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
 }
 
-const ContentBox: React.FC<ContentBoxProps> = ({ classItem }) => {
+const ContentBox: React.FC<ContentBoxProps> = ({ classItem, lectures = {}, setLectures }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [lectures, setLectures] = useState<Lecture[]>(
-    classItem?.lectures || [],
-  );
-
-  // Fetch lectures whenever the classItem changes
-  useEffect(() => {
-    const fetchLectures = async () => {
-      if (classItem) {
-        try {
-          const fetchedLectures = await getLecturesForClass(classItem.id); // Fetch lectures from the API
-          setLectures(fetchedLectures);
-        } catch (error) {
-          console.error("Error fetching lectures:", error);
-        }
-      }
-    };
-
-    fetchLectures();
-  }, [classItem]); // Triggered when classItem changes
 
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+
+  // Get the lectures for the current class
+  const currentLectures = classItem ? lectures[parseInt(classItem.id)] || [] : [];
 
   return (
     <div>
@@ -43,7 +30,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({ classItem }) => {
         {icons.plusIcon} Add lecture
       </button>
       <ul>
-        {lectures.map((lectureItem, index) => (
+        {currentLectures.map((lectureItem, index) => (
           <li key={index}>{lectureItem.title}</li>
         ))}
       </ul>

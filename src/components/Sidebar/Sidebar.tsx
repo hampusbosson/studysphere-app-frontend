@@ -1,14 +1,16 @@
 import { Class } from "../../utils/classUtils";
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import icons from "../../assets/icons/icons";
 import { renameClass, deleteClass } from "../../utils/classUtils";
 import DeleteClassModal from "./DeleteClassModal";
+import ClassItem from "./ClassItem";
+import { Lecture } from "../../utils/lectureUtils";
 
 interface SideBarProps {
   classes: Class[];
   setActiveClass: React.Dispatch<React.SetStateAction<Class | null>>;
   setClasses: React.Dispatch<React.SetStateAction<Class[]>>;
   activeClass: Class | null;
+  lectures?: Record<number, Lecture[]>
 }
 
 const SideBar: React.FC<SideBarProps> = ({
@@ -16,6 +18,7 @@ const SideBar: React.FC<SideBarProps> = ({
   setClasses,
   setActiveClass,
   activeClass,
+  lectures,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalName, setDeleteModalName] = useState("");
@@ -24,20 +27,6 @@ const SideBar: React.FC<SideBarProps> = ({
   const [editValues, setEditValues] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({}); // Store refs for inputs
   const [listOpen, setListOpen] = useState<Record<string, boolean>>();
-
-  const openList = (className: string) => {
-    setListOpen((prev) => ({
-      ...prev,
-      [className]: true,
-    }));
-  };
-
-  const closeList = (className: string) => {
-    setListOpen((prev) => ({
-      ...prev,
-      [className]: false,
-    }));
-  };
 
   const handleDelete = async () => {
     const classToDelete = classes.find(
@@ -72,7 +61,7 @@ const SideBar: React.FC<SideBarProps> = ({
     setClassInEdit(className);
     setEditValues((prev) => ({
       ...prev,
-      [className]: className, // Initialize with the current name
+      [className]: classes.find((item) => item.name === className)?.name || "", // Initialize with the current class name
     }));
 
     // Focus the input box after setting it to edit mode
@@ -80,6 +69,8 @@ const SideBar: React.FC<SideBarProps> = ({
       inputRefs.current[className]?.focus();
     }, 0);
   };
+
+
 
   const handleEdit = async (e: React.FormEvent, className: string) => {
     e.preventDefault();
@@ -114,6 +105,12 @@ const SideBar: React.FC<SideBarProps> = ({
       setClasses(updatedClasses);
       setActiveClass(renamedClass);
       setClassInEdit(null); // Exit edit mode
+      
+      if (listOpen?.[className]) {
+        openList(renamedClass.name)
+      } else {
+        closeList(renamedClass.name);
+      }
     } catch (error) {
       console.error("Error renaming class:", error);
     }
@@ -153,105 +150,45 @@ const SideBar: React.FC<SideBarProps> = ({
   };
   const closeDeleteModal = () => setModalVisible(false);
 
+  const openList = (className: string) => {
+    setListOpen((prev) => ({
+      ...prev,
+      [className]: true,
+    }));
+  };
+
+  const closeList = (className: string) => {
+    setListOpen((prev) => ({
+      ...prev,
+      [className]: false,
+    }));
+  };
+
   return (
     <div className="border-r border-gray-800 flex flex-col h-full p-4">
       <p className="font-bold text-lg mb-4">My Classes</p>
       <ul className="space-y-2">
         {classes.map((classItem, index) => (
-          <li
+          <ClassItem
             key={index}
-            className={`cursor-pointer flex flex-col justify-between font-semibold ${
-              activeClass && activeClass.name === classItem.name
-                ? "text-white decoration-1"
-                : "text-gray-300 hover:text-white"
-            }`}
-            onClick={() => setActiveClass(classItem)}
-            onMouseEnter={() => setHoveredClass(classItem.name)}
-            onMouseLeave={() => setHoveredClass(null)}
-          >
-            <div className="flex flex-row justify-between ">
-            {classInEdit === classItem.name ? (
-              <div className="flex flex-row gap-1 items-center">
-                <div
-                  className={`transform transition-transform duration-200 ${
-                    listOpen?.[classItem.name] ? "rotate-90" : "rotate-0"
-                  }`}
-                >
-                  {icons.chevronRight()}
-                </div>
-                <form
-                  onSubmit={(e) => handleEdit(e, classItem.name)}
-                  onClick={(e) => e.stopPropagation()} // Prevent click from propagating
-                >
-                  <input
-                    ref={(el) => (inputRefs.current[classItem.name] = el)}
-                    type="text"
-                    value={editValues[classItem.name] || ""} // Use specific value for this class
-                    onChange={(e) => handleChange(e, classItem.name)}
-                    className="bg-transparent border-b border-gray-600 text-white focus:outline-none w-[90%]"
-                  />
-                </form>
-              </div>
-            ) : (
-              <div className="flex flex-row gap-1 items-center">
-                <button
-                  type="button"
-                  className="text-gray-500 hover:text-white"
-                  onClick={(e) => {
-                    e.stopPropagation(); //prevent triggering the classclick
-                    if (listOpen?.[classItem.name]) {
-                      closeList(classItem.name);
-                    } else {
-                      openList(classItem.name);
-                    }
-                  }}
-                >
-                  <div
-                    className={`transform transition-transform duration-200 ${
-                      listOpen?.[classItem.name] ? "rotate-90" : "rotate-0"
-                    }`}
-                  >
-                    {icons.chevronRight()}
-                  </div>
-                </button>
-                <span>{classItem.name}</span>
-              </div>
-            )}
-            {hoveredClass === classItem.name && (
-              <div className="flex flex-row gap-2 -mr-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation(); // prevent triggering the class click
-                    handleEditClick(classItem.name);
-                  }}
-                >
-                  {icons.editIcon}
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation(); // prevent triggering the class click
-                    openDeleteModal(classItem.name);
-                  }}
-                >
-                  {icons.deleteIcon}
-                </button>
-              </div>
-            )}
-            </div>
-            
-            {listOpen?.[classItem.name] && classItem.lectures && classItem.lectures?.length > 0 && (
-              <ul className="ml-3 mt-2 flex flex-col gap-2 border-b border-gray-700 pb-2 w-[90%]">
-                {classItem.lectures?.map((lectureItem, index) => (
-                  <li key={index} className="text-white text-sm font-light">
-                    <div className="flex flex-row gap-1 items-center">
-                      <p>-</p>
-                      <p>{lectureItem.title}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
+            classItem={classItem}
+            activeClass={activeClass}
+            listOpen={listOpen || {}}
+            setActiveClass={setActiveClass}
+            handleEdit={handleEdit}
+            handleEditClick={handleEditClick}
+            handleChange={handleChange}
+            hoveredClass={hoveredClass}
+            setHoveredClass={setHoveredClass}
+            setDeleteModalName={setDeleteModalName}
+            openDeleteModal={openDeleteModal}
+            classInEdit={classInEdit}
+            inputRefs={inputRefs}
+            lectures={lectures}
+            editValues={editValues}
+            openList={openList}
+            closeList={closeList}
+          />
         ))}
       </ul>
       {modalVisible && (

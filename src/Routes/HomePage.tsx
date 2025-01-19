@@ -5,29 +5,43 @@ import icons from "../assets/icons/icons";
 import NewClassModal from "../components/Main/NewClassModal";
 import ContentBox from "../components/ClassContent/ContentBox";
 import { getClasses, Class } from "../utils/classUtils";
+import { Lecture } from "../utils/lectureUtils";
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [classes, setClasses] = useState<Class[]>([]);
   const [activeClass, setActiveClass] = useState<Class | null>(classes[0]);
+  const [lecturesByClass, setLecturesByClass] = useState<Record<number, Lecture[]>>({});
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   // Fetch classes from the database on mount
   useEffect(() => {
-    const fetchClasses = async () => {
+    const fetchClassesWithLectures = async () => {
       try {
-        const userClasses = await getClasses();
+        // Fetch classes along with their lectures
+        const userClasses = await getClasses(); 
         setClasses(userClasses); // Update classes with fetched data
-        setActiveClass(userClasses[0])
+        setActiveClass(userClasses[0]); // Set the first class as active
+  
+        // Populate lecturesByClass from fetched data
+        const newLecturesByClass = userClasses.reduce(
+          (acc: Record<number, Lecture[]>, classItem: Class) => {
+            acc[parseInt(classItem.id)] = classItem.lectures || [];
+            return acc;
+          },
+          {},
+        );
+        setLecturesByClass(newLecturesByClass);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching classes and lectures:", error);
       }
     };
-
-    fetchClasses();
+  
+    fetchClassesWithLectures();
   }, []);
+
 
   return (
     <Layout>
@@ -38,6 +52,7 @@ const HomePage: React.FC = () => {
             setActiveClass={setActiveClass}
             setClasses={setClasses}
             activeClass={activeClass}
+            lectures={lecturesByClass}
           />
         </div>
         <div className="col-span-5 p-8">
@@ -54,7 +69,7 @@ const HomePage: React.FC = () => {
             </button>
           </div>
           <div className="mt-4">
-            <ContentBox classItem={activeClass}/>
+            <ContentBox classItem={activeClass} lectures={lecturesByClass} setLectures={setLecturesByClass}/>
           </div>
         </div>
         {isModalOpen && (
