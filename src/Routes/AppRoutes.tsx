@@ -4,7 +4,8 @@ import App from "../App";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignUpPage";
 import VerifyEmail from "./VerifyEmail";
-import HomePage from "./HomePage";
+import HomePage from "./Home/HomePage";
+import LecturePage from "./Home/LecturePage";
 import RequestResetPassword from "./RequestResetPassword";
 import ResetPassword from "./ResetPassword";
 import ProtectedRoute from "./ProtectedRoute";
@@ -70,7 +71,17 @@ const AppRoutes: React.FC = () => {
               <HomePage />
             </ProtectedRoute>
           }
-        />
+        >
+          {/* Nested Route for LecturePage */}
+          <Route
+            path="lecture/:lectureId"
+            element={
+              <ProtectedRoute>
+                <LecturePage />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
