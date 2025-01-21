@@ -54,10 +54,8 @@ const ClassItem: React.FC<ClassItemProps> = ({
     setActiveClass(classItem);
     navigate('/home');
   }
-
-  const handleLectureClick = (lectureId: string) => {
-    
-    navigate(`/home/lecture/${lectureId}`);
+  const handleLectureClick = (lecture: Lecture) => {
+    navigate(`/home/lecture/${lecture.id}`, {state: { lecture, classItem, setActiveClass } });
   };
 
   return (
@@ -152,7 +150,7 @@ const ClassItem: React.FC<ClassItemProps> = ({
             <li key={index} className="text-white text-sm font-light hover:font-medium">
               <div className="flex flex-row gap-1 items-center" onClick={(e) => {
                 e.stopPropagation()
-                handleLectureClick(lectureItem.id)
+                handleLectureClick(lectureItem)
               }}>
                 <p>-</p>
                 <p>{lectureItem.title}</p>
