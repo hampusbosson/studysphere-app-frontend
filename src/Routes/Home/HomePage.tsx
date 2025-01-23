@@ -8,13 +8,14 @@ import ContentBox from "../../components/ClassContent/ContentBox";
 import { getClasses, Class } from "../../utils/classUtils";
 import { Lecture } from "../../utils/lectureUtils";
 import { Outlet } from "react-router-dom"; // Import Outlet
+import { useActiveClass } from "../../context/useActiveClass";
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [classes, setClasses] = useState<Class[]>([]);
-  const [activeClass, setActiveClass] = useState<Class | null>(classes[0]);
   const [lecturesByClass, setLecturesByClass] = useState<Record<number, Lecture[]>>({});
   const lectureRouteMatch = useMatch("/home/lecture/:lectureId"); // Check if the route matches the lecture page
+  const { activeClass, setActiveClass } = useActiveClass();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -43,7 +44,7 @@ const HomePage: React.FC = () => {
     };
   
     fetchClassesWithLectures();
-  }, []);
+  }, [setActiveClass]);
 
 
   return (

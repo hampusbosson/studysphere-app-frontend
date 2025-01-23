@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { /*useParams,*/ useLocation, useNavigate } from "react-router-dom";
-//import { Lecture } from "../../utils/lectureUtils";
+import { useActiveClass } from "../../context/useActiveClass";
 
 const LecturePage: React.FC = () => {
   const navigate = useNavigate();
   //const { lectureId } = useParams<{ lectureId: string }>();
   const location = useLocation();
-  const { lecture, classItem, setActiveClass } = location.state || {};
+  const { lecture, classItem } = location.state || {};
+  const { setActiveClass } = useActiveClass();
 
   const [activeButton, setActiveButton] = useState("summary");
 
   const handleClassClick = () => {
-    setActiveClass(classItem)
+    setActiveClass(classItem);
     navigate("/home");
   };
 

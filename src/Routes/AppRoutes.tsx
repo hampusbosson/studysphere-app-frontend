@@ -10,79 +10,82 @@ import RequestResetPassword from "./RequestResetPassword";
 import ResetPassword from "./ResetPassword";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestRoute from "./GuestRoute";
+import { ActiveClassProvider } from "../context/ActiveClassContext";
 
 const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Redirect base URL to /home if user is logged in */}
-        <Route
-          path="/"
-          element={
-            <GuestRoute>
-              <App />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="login"
-          element={
-            <GuestRoute>
-              <LoginPage />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="signup"
-          element={
-            <GuestRoute>
-              <SignupPage />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="verify"
-          element={
-            <GuestRoute>
-              <VerifyEmail />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="reset"
-          element={
-            <GuestRoute>
-              <RequestResetPassword />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="reset-password"
-          element={
-            <GuestRoute>
-              <ResetPassword />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="home"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        >
-          {/* Nested Route for LecturePage */}
+      <ActiveClassProvider>
+        <Routes>
+          {/* Redirect base URL to /home if user is logged in */}
           <Route
-            path="lecture/:lectureId"
+            path="/"
             element={
-              <ProtectedRoute>
-                <LecturePage />
-              </ProtectedRoute>
+              <GuestRoute>
+                <App />
+              </GuestRoute>
             }
           />
-        </Route>
-      </Routes>
+          <Route
+            path="login"
+            element={
+              <GuestRoute>
+                <LoginPage />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <GuestRoute>
+                <SignupPage />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="verify"
+            element={
+              <GuestRoute>
+                <VerifyEmail />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="reset"
+            element={
+              <GuestRoute>
+                <RequestResetPassword />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="reset-password"
+            element={
+              <GuestRoute>
+                <ResetPassword />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="home"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          >
+            {/* Nested Route for LecturePage */}
+            <Route
+              path="lecture/:lectureId"
+              element={
+                <ProtectedRoute>
+                  <LecturePage />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+        </Routes>
+      </ActiveClassProvider>
     </BrowserRouter>
   );
 };
