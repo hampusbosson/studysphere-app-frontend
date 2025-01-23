@@ -8,8 +8,13 @@ interface ActiveClassContextProps {
 
 const ActiveClassContext = createContext<ActiveClassContextProps | undefined>(undefined);
 
-export const ActiveClassProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [ activeClass, setActiveClass ] = useState<Class | null>(null);
+interface ActiveClassProviderProps {
+    children: ReactNode;
+    defaultActiveClass?: Class | null;
+}
+
+export const ActiveClassProvider: React.FC<ActiveClassProviderProps> = ({ children, defaultActiveClass = null }) => {
+    const [ activeClass, setActiveClass ] = useState<Class | null>(defaultActiveClass);
 
     return (
         <ActiveClassContext.Provider value={{ activeClass, setActiveClass }}>
