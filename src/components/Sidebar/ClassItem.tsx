@@ -23,7 +23,7 @@ interface ClassItemProps {
   inputRefs: React.MutableRefObject<Record<string, HTMLInputElement | null>>;
   lectures?: Record<number, Lecture[]>;
   editValues: Record<string, string>;
-  openList: (className: string) => void; 
+  openList: (className: string) => void;
   closeList: (className: string) => void;
 }
 
@@ -45,17 +45,18 @@ const ClassItem: React.FC<ClassItemProps> = ({
   openList,
   closeList,
 }) => {
-
   const navigate = useNavigate();
 
-  const currentLectures = classItem ? lectures[parseInt(classItem.id)] || [] : [];
+  const currentLectures = classItem
+    ? lectures[parseInt(classItem.id)] || []
+    : [];
 
   const handleClassClick = (classItem: Class) => {
     setActiveClass(classItem);
-    navigate('/home');
-  }
+    navigate("/home");
+  };
   const handleLectureClick = (lecture: Lecture) => {
-    navigate(`/home/lecture/${lecture.id}`, {state: { lecture, classItem, setActiveClass } });
+    navigate(`/home/lecture/${lecture.id}`, { state: { lecture, classItem } });
   };
 
   return (
@@ -86,7 +87,7 @@ const ClassItem: React.FC<ClassItemProps> = ({
               <input
                 ref={(el) => (inputRefs.current[classItem.name] = el)}
                 type="text"
-                value={editValues[classItem.name] || ""} 
+                value={editValues[classItem.name] || ""}
                 onChange={(e) => handleChange(e, classItem.name)}
                 className="bg-transparent border-b border-gray-600 text-white focus:outline-none w-[90%]"
               />
@@ -141,17 +142,23 @@ const ClassItem: React.FC<ClassItemProps> = ({
       {listOpen?.[classItem.name] && (
         <ul
           className={`ml-3 flex flex-col w-[90%] ${
-            currentLectures && currentLectures.length > 0 
+            currentLectures && currentLectures.length > 0
               ? "border-b border-gray-700 pb-2 mt-2 gap-2"
               : ""
           }`}
         >
           {currentLectures?.map((lectureItem, index) => (
-            <li key={index} className="text-white text-sm font-light hover:font-medium">
-              <div className="flex flex-row gap-1 items-center" onClick={(e) => {
-                e.stopPropagation()
-                handleLectureClick(lectureItem)
-              }}>
+            <li
+              key={index}
+              className="text-white text-sm font-light hover:font-medium"
+            >
+              <div
+                className="flex flex-row gap-1 items-center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleLectureClick(lectureItem);
+                }}
+              >
                 <p>-</p>
                 <p>{lectureItem.title}</p>
               </div>

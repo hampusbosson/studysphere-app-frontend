@@ -9,14 +9,12 @@ interface ContentBoxProps {
   classItem: Class | null;
   lectures?: Record<number, Lecture[]>;
   setLectures: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
-  setActiveClass: React.Dispatch<React.SetStateAction<Class | null>>; 
 }
 
 const ContentBox: React.FC<ContentBoxProps> = ({
   classItem,
   lectures = {},
   setLectures,
-  setActiveClass,
 }) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
