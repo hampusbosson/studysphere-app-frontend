@@ -26,7 +26,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
     }
   
     try {
-      const newLecture = await createLecture(classItem?.id, subjectName.trim());
+      const newLecture = await createLecture(classItem?.id, subjectName.trim(), url.trim());
       if (!classItem?.id) {
         throw new Error("Class ID is undefined");
       }
