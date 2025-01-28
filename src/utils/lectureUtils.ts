@@ -15,16 +15,19 @@ export interface Lecture {
  * Create a new lecture linked to a class
  * @param {string} classId
  * @param {string} lectureTitle
+ * @param {string} url
  * @returns {promise<Lecture>}
  */
 export async function createLecture(
   classId: string | undefined,
   lectureTitle: string,
+  url: string,
 ): Promise<Lecture> {
   try {
     const response = await api.post("/create", {
       classId,
       lectureTitle,
+      url,
     });
 
     return response.data.newLecture;
@@ -44,6 +47,23 @@ export async function getLecturesForClass(classId: string): Promise<Lecture[]> {
     const response = await api.get(`/lectures/${classId}`);
 
     return response.data.lectures;
+  } catch (error) {
+    console.error("Error fetching lectures", error);
+    throw new Error("Failed to fetch lectures");
+  }
+}
+
+/**
+ * Delete a lecture
+ * @param {string} lectureId
+ * @returns {promise<void>}
+ */
+export async function deleteLecture(lectureId: string): Promise<void> {
+  try {
+    await api.post("/delete", {
+      lectureId,
+    });
+
   } catch (error) {
     console.error("Error fetching lectures", error);
     throw new Error("Failed to fetch lectures");
