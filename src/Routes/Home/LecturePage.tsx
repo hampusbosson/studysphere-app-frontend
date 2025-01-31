@@ -1,15 +1,27 @@
-import React, { useState } from "react";
-import { /*useParams,*/ useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useActiveClass } from "../../context/useActiveClass";
 
 const LecturePage: React.FC = () => {
   const navigate = useNavigate();
-  //const { lectureId } = useParams<{ lectureId: string }>();
   const location = useLocation();
   const { lecture, classItem } = location.state || {};
   const { setActiveClass } = useActiveClass();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [activeButton, setActiveButton] = useState("summary");
+  const [content, setContent] = useState(lecture.content);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [content])
+
+  useEffect(() => {
+    setContent(lecture.content); 
+  }, [lecture])
 
   const handleClassClick = () => {
     setActiveClass(classItem);
@@ -64,6 +76,17 @@ const LecturePage: React.FC = () => {
         </div>
         <h1>Lecture Details</h1>
         <p>title: {lecture.title}</p>
+        <textarea
+          ref={textareaRef}
+          className="outline-none w-full resize-none" // Add 'resize-none' to prevent manual resizing
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+            e.target.style.height = "auto"; // Reset the height
+            e.target.style.height = `${e.target.scrollHeight}px`; // Adjust height to content
+          }}
+          style={{ overflow: "hidden" }} // Hide scrollbar
+        />
       </div>
     </div>
   );
