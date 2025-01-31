@@ -24,7 +24,8 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
       setErrorMessage("Lecture name cannot be empty");
       return;
     }
-  
+
+    onClose();  
     try {
       const newLecture = await createLecture(classItem?.id, subjectName.trim(), url.trim());
       if (!classItem?.id) {
@@ -117,7 +118,6 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
                 <div className="mt-4">
                   <p className="mb-2 text-white">Supports:</p>
                   <ul className="flex flex-col gap-2 text-white">
-                    <li>- Websites, articles, blogs</li>
                     <li>- Online PDF's</li>
                     <li>- Google Docs</li>
                     <li>- Google Slides</li>
