@@ -38,7 +38,6 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
         [classItem.id]: [...(prev[parseInt(classItem.id)] || []), newLecture],
       }));
   
-      onClose(); // Close the modal
     } catch (error) {
       console.error("Error creating lecture:", error);
       setErrorMessage("Failed to create lecture, Please try again.");
