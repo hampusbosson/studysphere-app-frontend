@@ -41,11 +41,12 @@ const ContentBox: React.FC<ContentBoxProps> = ({
     : [];
 
   const handleLectureClick = (lecture: Lecture) => {
+    
     navigate(`/home/lecture/${lecture.id}`, { state: { lecture, classItem } });
   };
 
   return (
-    <div>
+    <div className="h-full">
       {isLoading ? (
         <LoadingSpinner />
       ) : (
