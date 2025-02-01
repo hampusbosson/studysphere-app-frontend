@@ -5,6 +5,7 @@ import AddLectureModal from "./AddLectureModal";
 import { Lecture } from "../../utils/lectureUtils";
 import { useNavigate } from "react-router-dom";
 import NewClassModal from "../../components/Main/NewClassModal";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface ContentBoxProps {
   classItem: Class | null;
@@ -25,10 +26,11 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   openClassModal,
   closeClassModal,
   isClassModalOpen,
-  setClasses
+  setClasses,
 }) => {
   const navigate = useNavigate();
   const [isLectureModalOpen, setIsLectureModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openLectureModal = () => setIsLectureModalOpen(true);
   const closeLectureModal = () => setIsLectureModalOpen(false);
@@ -44,48 +46,55 @@ const ContentBox: React.FC<ContentBoxProps> = ({
 
   return (
     <div>
-      <div className="flex flex-row justify-between items-start">
-        <h1 className="text-4xl font-semibold font-montserrat">
-          {activeClass ? activeClass.name : null}
-        </h1>
-        <button
-          className="flex flex-row items-center gap-2 bg-accent pl-3 pr-4 py-2 rounded-lg hover:bg-accentHover"
-          onClick={openClassModal}
-        >
-          {icons.plusIcon}
-          <p className="font-semibold text-lg">New Class</p>
-        </button>
-      </div>
-      <div className="mt-4">
-        <button
-          onClick={openLectureModal}
-          className="flex flex-row bg-gray-700 rounded-lg py-2 pl-3 pr-4 items-center justify-center gap-1 hover:bg-gray-800 font-semibold"
-        >
-          {icons.plusIcon} Add lecture
-        </button>
-        <ul className="flex flex-row gap-10 flex-wrap mt-6">
-          {currentLectures.map((lectureItem, index) => (
-            <li
-              key={index}
-              className="border border-gray-600 w-60 h-64 rounded-lg hover:border-gray-400 hover:cursor-pointer"
-              onClick={() => handleLectureClick(lectureItem)}
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <div className="flex flex-row justify-between items-start">
+            <h1 className="text-4xl font-semibold font-montserrat">
+              {activeClass ? activeClass.name : null}
+            </h1>
+            <button
+              className="flex flex-row items-center gap-2 bg-accent pl-3 pr-4 py-2 rounded-lg hover:bg-accentHover"
+              onClick={openClassModal}
             >
-              <p className="py-2 border-b border-gray-600 font-semibold text-center">
-                {lectureItem.title}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </div>
-      {isClassModalOpen && (
-        <NewClassModal onClose={closeClassModal} setClasses={setClasses} />
-      )}
-      {isLectureModalOpen && (
-        <AddLectureModal
-          onClose={closeLectureModal}
-          classItem={classItem}
-          setLectures={setLectures}
-        />
+              {icons.plusIcon}
+              <p className="font-semibold text-lg">New Class</p>
+            </button>
+          </div>
+          <div className="mt-4">
+            <button
+              onClick={openLectureModal}
+              className="flex flex-row bg-gray-700 rounded-lg py-2 pl-3 pr-4 items-center justify-center gap-1 hover:bg-gray-800 font-semibold"
+            >
+              {icons.plusIcon} Add lecture
+            </button>
+            <ul className="flex flex-row gap-10 flex-wrap mt-6">
+              {currentLectures.map((lectureItem, index) => (
+                <li
+                  key={index}
+                  className="border border-gray-600 w-60 h-64 rounded-lg hover:border-gray-400 hover:cursor-pointer"
+                  onClick={() => handleLectureClick(lectureItem)}
+                >
+                  <p className="py-2 border-b border-gray-600 font-semibold text-center">
+                    {lectureItem.title}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {isClassModalOpen && (
+            <NewClassModal onClose={closeClassModal} setClasses={setClasses} />
+          )}
+          {isLectureModalOpen && (
+            <AddLectureModal
+              onClose={closeLectureModal}
+              classItem={classItem}
+              setLectures={setLectures}
+              setIsLoading={setIsLoading}
+            />
+          )}
+        </>
       )}
     </div>
   );
