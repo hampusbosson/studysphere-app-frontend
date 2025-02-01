@@ -4,14 +4,22 @@ import InputField from "../Auth/InputField";
 import icons from "../../assets/icons/icons";
 import { createLecture } from "../../utils/lectureUtils";
 import { Lecture } from "../../utils/lectureUtils";
+import { useNavigate } from "react-router-dom";
 
 interface AddSubjectModalProps {
   classItem: Class | null;
   onClose: () => void;
   setLectures: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, setLectures }) => {
+const AddLectureModal: React.FC<AddSubjectModalProps> = ({
+  classItem,
+  onClose,
+  setLectures,
+  setIsLoading
+}) => {
+  const navigate = useNavigate();
   const [subjectName, setSubjectName] = useState("");
   const [url, setUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,30 +27,48 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({ classItem, onClose, s
 
   const handleAddLecture = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (subjectName.trim() === "") {
       setErrorMessage("Lecture name cannot be empty");
       return;
     }
 
-    onClose();  
+    onClose();
+    
     try {
-      const newLecture = await createLecture(classItem?.id, subjectName.trim(), url.trim());
+      setIsLoading(true);
+      const newLecture = await createLecture(
+        classItem?.id,
+        subjectName.trim(),
+        url.trim(),
+      );
       if (!classItem?.id) {
         throw new Error("Class ID is undefined");
       }
-  
-      // Update the lectures for the specific class
-      setLectures((prev) => ({
-        ...prev,
-        [classItem.id]: [...(prev[parseInt(classItem.id)] || []), newLecture],
-      }));
-  
+
+      // Wait for lectures state to update before navigating
+      await new Promise((resolve) => {
+        setLectures((prev) => {
+          const updatedLectures = {
+            ...prev,
+            [classItem.id]: [...(prev[parseInt(classItem.id)] || []), newLecture],
+          };
+          resolve(updatedLectures); //ensure it's updated before navigating
+          return updatedLectures;
+        });
+      });
+
+      setIsLoading(false);
+      navigateToLecturePage(newLecture);
     } catch (error) {
       console.error("Error creating lecture:", error);
       setErrorMessage("Failed to create lecture, Please try again.");
     }
   };
+
+  const navigateToLecturePage = (lecture: Lecture) => {
+    navigate(`/home/lecture/${lecture.id}`, { state: { lecture, classItem } });
+  }
 
   return (
     <div
