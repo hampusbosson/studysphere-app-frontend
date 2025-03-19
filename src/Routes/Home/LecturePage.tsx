@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useActiveClass } from "../../context/useActiveClass";
+import { Tiptap } from "../../components/Lecture/TextEditor";
 
 const LecturePage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ const LecturePage: React.FC = () => {
   const [activeButton, setActiveButton] = useState("summary");
   const [content, setContent] = useState(lecture.content);
 
+  console.log(lecture.id);
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -20,6 +23,7 @@ const LecturePage: React.FC = () => {
   }, [content])
 
   useEffect(() => {
+
     setContent(lecture.content); 
   }, [lecture])
 
@@ -47,7 +51,7 @@ const LecturePage: React.FC = () => {
         <p> / </p>
         <p className="text-white">{lecture.title}</p>
       </div>
-      <div className="bg-gray-900 rounded-lg mt-2 p-2">
+      <div className="bg-gray-900 rounded-lg mt-2 p-2 flex flex-col gap-4">
         <div className="flex flex-row justify-around font-bold w-full gap-2">
           <button
             className={`py-3 w-full rounded-lg ${
@@ -74,19 +78,9 @@ const LecturePage: React.FC = () => {
             Quiz
           </button>
         </div>
-        <h1>Lecture Details</h1>
-        <p>title: {lecture.title}</p>
-        <textarea
-          ref={textareaRef}
-          className="outline-none w-full resize-none" // Add 'resize-none' to prevent manual resizing
-          value={content}
-          onChange={(e) => {
-            setContent(e.target.value);
-            e.target.style.height = "auto"; // Reset the height
-            e.target.style.height = `${e.target.scrollHeight}px`; // Adjust height to content
-          }}
-          style={{ overflow: "hidden" }} // Hide scrollbar
-        />
+        <div>
+        <Tiptap content={content}/>
+        </div>
       </div>
     </div>
   );
