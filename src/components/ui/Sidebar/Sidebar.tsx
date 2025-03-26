@@ -2,8 +2,8 @@ import { Course } from "../../../types/api";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { renameCourse } from "../../../features/courses/api/rename-course";
 import { deleteCourse } from "../../../features/courses/api/delete-course";
-import DeleteCourseModal from "./DeleteCourseModal";
-import CourseItem from "./CourseItem";
+import DeleteCourseModal from "../../../features/courses/components/DeleteCourseModal";
+import CourseItem from "../../../features/courses/components/CourseItem";
 import { Lecture } from "../../../types/api";
 
 interface SideBarProps {
@@ -12,6 +12,8 @@ interface SideBarProps {
   setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
   activeCourse: Course | null;
   lectures?: Record<number, Lecture[]>
+  setActiveLecture: React.Dispatch<React.SetStateAction<string>>
+  activeLecture: string;
 }
 
 const SideBar: React.FC<SideBarProps> = ({
@@ -20,6 +22,8 @@ const SideBar: React.FC<SideBarProps> = ({
   setActiveCourse,
   activeCourse,
   lectures,
+  setActiveLecture,
+  activeLecture
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalName, setDeleteModalName] = useState("");
@@ -189,6 +193,8 @@ const SideBar: React.FC<SideBarProps> = ({
             editValues={editValues}
             openList={openList}
             closeList={closeList}
+            setActiveLecture={setActiveLecture}
+            activeLecture={activeLecture}
           />
         ))}
       </ul>

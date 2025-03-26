@@ -13,8 +13,6 @@ const LecturePage: React.FC = () => {
   const [activeButton, setActiveButton] = useState("summary");
   const [content, setContent] = useState(lecture.content);
 
-  console.log(lecture.id);
-
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";

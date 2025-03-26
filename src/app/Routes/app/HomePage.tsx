@@ -11,6 +11,7 @@ import { getCourses } from "../../../features/courses/api/get-courses";
 
 const HomePage: React.FC = () => {
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
+  const [activeLecture, setActiveLecture] = useState("");
   const [courses, setCourses] = useState<Course[]>([]);
   const [lecturesByCourse, setLecturesByCourse] = useState<
     Record<number, Lecture[]>
@@ -58,6 +59,8 @@ const HomePage: React.FC = () => {
             setCourses={setCourses}
             activeCourse={activeCourse}
             lectures={lecturesByCourse}
+            setActiveLecture={setActiveLecture}
+            activeLecture={activeLecture}
           />
         </div>
         <div className="col-span-5 p-8">
@@ -72,10 +75,11 @@ const HomePage: React.FC = () => {
                 closeClassModal={closeCourseModal}
                 isClassModalOpen={isCourseModalOpen}
                 setCourses={setCourses}
+                setActiveLecture={setActiveLecture}
               />
             </>
           ) : (
-            // Render Outlet for the lecture route, renders nested route for homepage
+            // Render Outlet for the lecture route, renders LecturePage
             <Outlet />
           )}
         </div>
