@@ -3,7 +3,7 @@ import { useMatch } from "react-router-dom";
 import DashboardLayout from "../../../components/layouts/dashboard-layout";
 import SideBar from "../../../components/ui/Sidebar/Sidebar";
 import ContentBox from "../../../features/courses/components/ContentBox";
-import { Lecture } from "../../../utils/lectureUtils";
+import { Lecture } from "../../../types/api";
 import { Outlet } from "react-router-dom"; // Import Outlet
 import { useActiveCourse } from "../../../context/useActiveCourse";
 import { Course } from "../../../types/api";
@@ -27,6 +27,7 @@ const HomePage: React.FC = () => {
       try {
         // Fetch classes along with their lectures
         const userCourses = await getCourses();
+        console.log(userCourses)
         setCourses(userCourses || []); // Update classes with fetched data
         setActiveCourse(userCourses[0]); // Set the first class as active
 

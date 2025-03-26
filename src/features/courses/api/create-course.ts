@@ -7,7 +7,7 @@ import { Course } from "../../../types/api";
  * @returns {promise<Course>}
  */
 export async function createCourse(courseName: string): Promise<Course> {
-  const response = await api.post("/class/create", {
+  const response = await api.post("/course/create", {
     courseName,
   });
   return response.data.newClass;

@@ -5,38 +5,40 @@ import { Course } from "../../../types/api";
 
 interface NewCourseModalProps {
   onClose: () => void;
-  setClasses: React.Dispatch<React.SetStateAction<Course[]>>;
+  setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
 }
 
 const NewCourseModal: React.FC<NewCourseModalProps> = ({
   onClose,
-  setClasses,
+  setCourses,
 }) => {
   const [courseName, setCourseName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const capitalizeClassName = (courseName: string) => {
+  const capitalizeCourseName = (courseName: string) => {
     return courseName.charAt(0).toUpperCase() + courseName.slice(1);
   };
 
-  const handleAddClass = async (e: React.FormEvent) => {
+  const handleAddCourse = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (courseName.trim() === "") {
-      setErrorMessage("Class name cannot be empty");
+      setErrorMessage("Course name cannot be empty");
       return;
     }
 
     try {
-      const newClassCapitalized = capitalizeClassName(courseName);
-      const newClass = await createCourse(newClassCapitalized);
+      console.log(courseName);
+      const newCourseCapitalized = capitalizeCourseName(courseName);
+      console.log(newCourseCapitalized);
+      const newCourse = await createCourse(newCourseCapitalized);
 
-      setClasses((prevClasses) => [...prevClasses, newClass]);
+      setCourses((prevCourses) => [...prevCourses, newCourse]);
       setCourseName("");
       onClose();
     } catch (error) {
-      console.error("Error creating class:", error);
-      setErrorMessage("Failed to create class, Please try again.");
+      console.error("Error creating course:", error);
+      setErrorMessage("Failed to create course, Please try again.");
     }
   };
 
@@ -52,7 +54,7 @@ const NewCourseModal: React.FC<NewCourseModalProps> = ({
         <h2 className="text-xl font-bold">Whats the name of your class?</h2>
         <form
           className="flex flex-col justify-end gap-4 mt-4"
-          onSubmit={handleAddClass}
+          onSubmit={handleAddCourse}
         >
           <InputField
             type="text"

@@ -7,7 +7,7 @@ import { Course } from "../../../types/api";
  * @returns {Promise<Course>}
  */
 export async function deleteCourse(courseId: number): Promise<Course> {
-  const response = await api.post("/class/delete", {
+  const response = await api.post("/course/delete", {
     courseId,
   });
 

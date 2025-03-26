@@ -3,7 +3,7 @@ import icons from "../../../assets/icons/icons";
 import AddLectureModal from "../../course-material/components/AddLectureModal";
 import { Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
-import NewClassModal from "./NewCourseModal";
+import NewCourseModal from "./NewCourseModal";
 import LoadingSpinner from "./LoadingSpinner";
 import { Course } from "../../../types/api";
 
@@ -85,7 +85,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
             </ul>
           </div>
           {isClassModalOpen && (
-            <NewClassModal onClose={closeClassModal} setClasses={setCourses} />
+            <NewCourseModal onClose={closeClassModal} setCourses={setCourses} />
           )}
           {isLectureModalOpen && (
             <AddLectureModal

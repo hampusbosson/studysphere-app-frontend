@@ -8,7 +8,7 @@ import { Course } from "../../../types/api";
  * @returns {Promise<Class>}
  */
 export async function renameCourse(courseId: number, newCourseName: string): Promise<Course> {
-        const response = await api.post("/class/rename", {
+        const response = await api.post("/course/rename", {
             courseId,
             newName: newCourseName
         });

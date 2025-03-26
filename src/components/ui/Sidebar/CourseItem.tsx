@@ -1,7 +1,7 @@
 import React from "react";
 import icons from "../../../assets/icons/icons";
 import { Course } from "../../../types/api";
-import { Lecture } from "../../../utils/lectureUtils";
+import { Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
 
 interface CourseItemProps {

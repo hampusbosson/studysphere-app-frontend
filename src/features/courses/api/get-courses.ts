@@ -6,6 +6,7 @@ import { Course } from "../../../types/api";
  * @returns {promise<Course[]>}
  */
 export async function getCourses(): Promise<Course[]> {
-        const response = await api.get("/class/classes");
-        return response.data.userClasses;
+        const response = await api.get("/course/courses");
+        console.log(response)
+        return response.data.userCourses;
 }
