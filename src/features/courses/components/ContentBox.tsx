@@ -16,6 +16,7 @@ interface ContentBoxProps {
   closeClassModal: () => void;
   isClassModalOpen: boolean;
   setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
+  setActiveLecture: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ContentBox: React.FC<ContentBoxProps> = ({
@@ -27,6 +28,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   closeClassModal,
   isClassModalOpen,
   setCourses,
+  setActiveLecture
 }) => {
   const navigate = useNavigate();
   const [isLectureModalOpen, setIsLectureModalOpen] = useState(false);
@@ -41,7 +43,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
     : [];
 
   const handleLectureClick = (lecture: Lecture) => {
-    
+    setActiveLecture(lecture.title);
     navigate(`/home/lecture/${lecture.id}`, { state: { lecture, courseItem } });
   };
 
