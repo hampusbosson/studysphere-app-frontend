@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useActiveCourse } from "../../../context/useActiveCourse";
-import { Tiptap } from "../../../features/summaries/components/TextEditor";
+import CourseContent from "../../../features/course-material/components/course-content";
 
 const LecturePage: React.FC = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const LecturePage: React.FC = () => {
   const { setActiveCourse } = useActiveCourse();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [activeButton, setActiveButton] = useState("summary");
+  const [activeButton, setActiveButton] = useState("pdf");
   const [content, setContent] = useState(lecture.content);
 
   useEffect(() => {
@@ -30,12 +30,12 @@ const LecturePage: React.FC = () => {
     navigate("/home");
   };
 
+  const handlePdfClick = () => {
+    setActiveButton("pdf");
+  }
+
   const handleSummaryClick = () => {
     setActiveButton("summary");
-  };
-
-  const handleChatClick = () => {
-    setActiveButton("chat");
   };
 
   const handleQuizClick = () => {
@@ -44,13 +44,22 @@ const LecturePage: React.FC = () => {
 
   return (
     <div className="px-24">
+      <div></div>
       <div className="flex flex-row gap-2 text-gray-400 text-sm">
         <button onClick={handleClassClick}>{courseItem.name}</button>
         <p> / </p>
         <p className="text-white">{lecture.title}</p>
       </div>
       <div className="bg-gray-900 rounded-lg mt-2 p-2 flex flex-col gap-4">
-        <div className="flex flex-row justify-around font-bold w-full gap-2">
+        <div className="bg-gray-900 p-2 flex flex-row justify-around font-bold w-full gap-2 sticky top-0 z-10">
+          <button
+            className={`py-3 w-full rounded-lg ${
+              activeButton === "pdf" ? "bg-gray-800" : "bg-gray-700"
+            }`}
+            onClick={handlePdfClick}
+          >
+            PDF
+          </button> 
           <button
             className={`py-3 w-full rounded-lg ${
               activeButton === "summary" ? "bg-gray-800" : "bg-gray-700"
@@ -61,14 +70,6 @@ const LecturePage: React.FC = () => {
           </button>
           <button
             className={`py-3 w-full rounded-lg ${
-              activeButton === "chat" ? "bg-gray-800" : "bg-gray-700"
-            }`}
-            onClick={handleChatClick}
-          >
-            Chat
-          </button>
-          <button
-            className={`py-3 w-full rounded-lg ${
               activeButton === "quiz" ? "bg-gray-800" : "bg-gray-700"
             }`}
             onClick={handleQuizClick}
@@ -76,9 +77,10 @@ const LecturePage: React.FC = () => {
             Quiz
           </button>
         </div>
-        <div>
-        <Tiptap content={content}/>
-        </div>
+        <CourseContent 
+          activeState={activeButton}
+          summarizedContent={content}
+        />
       </div>
     </div>
   );

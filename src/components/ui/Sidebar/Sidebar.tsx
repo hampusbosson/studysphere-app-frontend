@@ -171,7 +171,8 @@ const SideBar: React.FC<SideBarProps> = ({
 
   return (
     <div className="border-r border-gray-800 flex flex-col h-full p-4">
-      <p className="font-bold text-lg mb-4">My Classes</p>
+      <div className="sticky top-2 z-10">
+      <p className="font-bold text-lg mb-4 ">My Classes</p>
       <ul className="space-y-2">
         {courses.map((courseItem, index) => (
           <CourseItem
@@ -198,6 +199,7 @@ const SideBar: React.FC<SideBarProps> = ({
           />
         ))}
       </ul>
+      </div>
       {modalVisible && (
         <DeleteCourseModal
           courseName={deleteModalName}
