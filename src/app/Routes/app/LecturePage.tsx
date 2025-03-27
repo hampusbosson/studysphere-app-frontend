@@ -12,6 +12,7 @@ const LecturePage: React.FC = () => {
 
   const [activeButton, setActiveButton] = useState("pdf");
   const [content, setContent] = useState(lecture.content);
+  const lectureUrl = lecture.url; 
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -80,6 +81,7 @@ const LecturePage: React.FC = () => {
         <CourseContent 
           activeState={activeButton}
           summarizedContent={content}
+          lectureUrl={lectureUrl}
         />
       </div>
     </div>

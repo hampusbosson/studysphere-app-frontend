@@ -41,29 +41,27 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ url }) => {
 interface CourseContentProps {
   activeState: string;
   summarizedContent: string;
+  lectureUrl: string; 
 }
 
 const CourseContent: React.FC<CourseContentProps> = ({
   activeState,
   summarizedContent,
+  lectureUrl,
 }) => {
-  const originalPdfUrl =
-    "https://www.upet.ro/annals/economics/pdf/2020/p1/8).%20Ilioni_2.pdf";
-  const proxyUrl = `http://localhost:3000/api/lecture/proxy?url=${encodeURIComponent(originalPdfUrl)}`;
+  const proxyUrl = `http://localhost:3000/api/lecture/proxy?url=${encodeURIComponent(lectureUrl)}`;
 
   return (
     <div>
-      {activeState === "pdf" && (
-        <div>
-          <PdfViewer url={proxyUrl} />
-        </div>
-      )}
-      {activeState === "summary" && (
-        <div>
-          <Tiptap content={summarizedContent} />
-        </div>
-      )}
-      {activeState === "quiz" && <div>quiz content</div>}
+      <div className={activeState === "pdf" ? "block" : "hidden"}>
+        {lectureUrl ? <PdfViewer url={proxyUrl} /> : <div></div>}
+      </div>
+      <div className={activeState === "summary" ? "block" : "hidden"}>
+        <Tiptap content={summarizedContent} />
+      </div>
+      <div className={activeState === "quiz" ? "block" : "hidden"}>
+        quiz content
+      </div>
     </div>
   );
 };
