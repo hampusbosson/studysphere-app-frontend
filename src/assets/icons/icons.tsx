@@ -363,14 +363,14 @@ const icons = {
       />
     </svg>
   ),
-  deleteIcon: (
+  deleteIcon: (size: number) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="gray"
-      className="size-4 hover:stroke-red-600"
+      className={`size-${size} hover:stroke-red-600`}
     >
       <path
         strokeLinecap="round"
@@ -379,14 +379,14 @@ const icons = {
       />
     </svg>
   ),
-  editIcon: (
+  editIcon: (size: number) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="gray"
-      className="size-4 hover:stroke-white"
+      className={`size-${size} hover:stroke-white`}
     >
       <path
         strokeLinecap="round"
