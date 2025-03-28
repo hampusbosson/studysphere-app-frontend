@@ -16,7 +16,7 @@ const CourseContent: React.FC<CourseContentProps> = ({
   const proxyUrl = `http://localhost:3000/api/lecture/proxy?url=${encodeURIComponent(lectureUrl)}`;
 
   return (
-    <div>
+    <div className="-mt-2 pb-1">
       <div className={activeState === "pdf" ? "block" : "hidden"}>
         {lectureUrl ? <PdfViewer url={proxyUrl} /> : <div></div>}
       </div>
