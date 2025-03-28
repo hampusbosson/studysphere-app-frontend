@@ -57,6 +57,7 @@ const CourseItem: React.FC<CourseItemProps> = ({
     : [];
 
   const handleCourseClick = (courseItem: Course) => {
+    setActiveLecture("");
     setActiveCourse(courseItem);
     navigate("/home");
   };
@@ -128,7 +129,7 @@ const CourseItem: React.FC<CourseItemProps> = ({
                 handleEditClick(courseItem.name);
               }}
             >
-              {icons.editIcon}
+              {icons.editIcon(4)}
             </button>
             <button
               onClick={(e) => {
@@ -136,7 +137,7 @@ const CourseItem: React.FC<CourseItemProps> = ({
                 openDeleteModal(courseItem.name);
               }}
             >
-              {icons.deleteIcon}
+              {icons.deleteIcon(4)}
             </button>
           </div>
         )}
