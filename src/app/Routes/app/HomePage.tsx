@@ -63,7 +63,7 @@ const HomePage: React.FC = () => {
             activeLecture={activeLecture}
           />
         </div>
-        <div className="col-span-5 p-8">
+        <div className="col-span-5 px-8 py-6">
           {!lectureRouteMatch ? ( // Render ContentBox when not on a lecture page
             <>
               <ContentBox
