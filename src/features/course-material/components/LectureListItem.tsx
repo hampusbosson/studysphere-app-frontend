@@ -17,7 +17,7 @@ const LectureListItem: React.FC<LectureListItemProps> = ({
   courseItem,
 }) => {
   const navigate = useNavigate();
-
+ 
   const handleLectureClick = (lecture: Lecture) => {
     setActiveLecture(lecture.title);
     navigate(`/home/lecture/${lecture.id}`, {

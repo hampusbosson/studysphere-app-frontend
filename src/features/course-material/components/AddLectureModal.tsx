@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import InputField from "../../auth/components/InputField";
 import icons from "../../../assets/icons/icons";
-import { createLecture } from "../api/create-material";
+import { createLecture } from "../api/create-lecture";
 import { Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
 import { Course } from "../../../types/api";
