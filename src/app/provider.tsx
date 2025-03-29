@@ -1,15 +1,15 @@
 import React from "react";
 import { AuthProvider } from "../context/auth-context";
 import { ActiveCourseProvider } from "../context/ActiveCourseContext";
-import { CurrentLectureProvider } from "../context/current-lecture-context";
+import { LecturesByCourseProvider } from "../context/lectures-by-course-context";
 
 export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
       <AuthProvider>
         <ActiveCourseProvider>
-          <CurrentLectureProvider>
+          <LecturesByCourseProvider>
             {children}
-          </CurrentLectureProvider>
+          </LecturesByCourseProvider>
         </ActiveCourseProvider>
       </AuthProvider>
     );
