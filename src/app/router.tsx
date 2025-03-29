@@ -12,6 +12,7 @@ import ResetPassword from "./Routes/auth/ResetPassword";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import GuestRoute from "./Routes/GuestRoute";
 import { ActiveCourseProvider } from "../context/ActiveCourseContext";
+import { CurrentLectureProvider } from "../context/current-lecture-context";
 
 const AppRouter: React.FC = () => {
   return (
