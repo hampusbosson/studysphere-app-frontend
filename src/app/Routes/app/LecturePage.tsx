@@ -39,9 +39,10 @@ const LecturePage: React.FC = () => {
       </div>
       <div className="bg-gray-900 rounded-xl mt-2 flex flex-col gap-2">
         <Toolbar 
-          courseItem={courseItem}
+          lecture={lecture}
           setActiveButton={setActiveButton}
           activeButton={activeButton}
+          courseItem={courseItem}
         />
         <CourseContent
           activeState={activeButton}

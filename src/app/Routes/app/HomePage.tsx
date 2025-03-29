@@ -8,16 +8,15 @@ import { Outlet } from "react-router-dom"; // Import Outlet
 import { useActiveCourse } from "../../../context/useActiveCourse";
 import { Course } from "../../../types/api";
 import { getCourses } from "../../../features/courses/api/get-courses";
+import { useLectureByCourse } from "../../../context/use-lectures-by-course";
 
 const HomePage: React.FC = () => {
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
   const [activeLecture, setActiveLecture] = useState("");
   const [courses, setCourses] = useState<Course[]>([]);
-  const [lecturesByCourse, setLecturesByCourse] = useState<
-    Record<number, Lecture[]>
-  >({});
   const lectureRouteMatch = useMatch("/home/lecture/:lectureId"); // Check if the route matches the lecture page
   const { activeCourse, setActiveCourse } = useActiveCourse();
+  const { lecturesByCourse, setLecturesByCourse } = useLectureByCourse();
 
   const openCourseModal = () => setIsCourseModalOpen(true);
   const closeCourseModal = () => setIsCourseModalOpen(false);
@@ -28,11 +27,10 @@ const HomePage: React.FC = () => {
       try {
         // Fetch classes along with their lectures
         const userCourses = await getCourses();
-        console.log(userCourses)
         setCourses(userCourses || []); // Update classes with fetched data
         setActiveCourse(userCourses[0]); // Set the first class as active
 
-        // Populate lecturesByClass from fetched data
+        // Populate lecturesByCourse from fetched data
         const newLecturesByCourse = userCourses.reduce(
           (acc: Record<number, Lecture[]>, courseItem: Course) => {
             acc[parseInt(courseItem.id)] = courseItem.lectures || [];
@@ -41,13 +39,14 @@ const HomePage: React.FC = () => {
           {},
         );
         setLecturesByCourse(newLecturesByCourse);
+
       } catch (error) {
         console.error("Error fetching classes and lectures:", error);
       }
     };
 
     fetchCoursesWithLectures();
-  }, [setActiveCourse]);
+  }, [setActiveCourse, setLecturesByCourse]);
 
   return (
     <DashboardLayout>

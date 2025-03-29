@@ -38,7 +38,7 @@ const SideBar: React.FC<SideBarProps> = ({
       (courseItem) => courseItem.name === deleteModalName,
     );
     if (!courseToDelete) {
-      console.error("Class not found");
+      console.error("Course not found");
       return;
     }
 
@@ -58,7 +58,7 @@ const SideBar: React.FC<SideBarProps> = ({
         setActiveCourse(updatedCourses.length > 0 ? updatedCourses[0] : null);
       }
     } catch (error) {
-      console.error("Error deleting class:", error);
+      console.error("Error deleting course:", error);
     }
   };
 
