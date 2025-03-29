@@ -2,10 +2,10 @@ import { api } from "../../../lib/api-client";
 
 /**
  * Delete a lecture
- * @param {string} lectureId
+ * @param {number} lectureId
  * @returns {promise<void>}
  */
-export async function deleteLecture(lectureId: string): Promise<void> {
+export async function deleteLecture(lectureId: number): Promise<void> {
   try {
     await api.post("/lecture/delete", {
       lectureId,
