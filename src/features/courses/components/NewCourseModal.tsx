@@ -51,7 +51,7 @@ const NewCourseModal: React.FC<NewCourseModalProps> = ({
         className="bg-background border-gray-600 border w-96 p-6 rounded-lg shadow-lg flex flex-col items-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-bold">Whats the name of your class?</h2>
+        <h2 className="text-xl font-bold">Whats the name of your course?</h2>
         <form
           className="flex flex-col justify-end gap-4 mt-4"
           onSubmit={handleAddCourse}

@@ -70,8 +70,8 @@ const HomePage: React.FC = () => {
                 lectures={lecturesByCourse}
                 setLectures={setLecturesByCourse}
                 activeCourse={activeCourse}
-                openClassModal={openCourseModal}
-                closeClassModal={closeCourseModal}
+                openCourseModal={openCourseModal}
+                closeCourseModal={closeCourseModal}
                 isClassModalOpen={isCourseModalOpen}
                 setCourses={setCourses}
                 setActiveLecture={setActiveLecture}

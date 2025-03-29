@@ -12,8 +12,8 @@ interface ContentBoxProps {
   lectures?: Record<number, Lecture[]>;
   setLectures: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
   activeCourse: Course | null;
-  openClassModal: () => void;
-  closeClassModal: () => void;
+  openCourseModal: () => void;
+  closeCourseModal: () => void;
   isClassModalOpen: boolean;
   setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
   setActiveLecture: React.Dispatch<React.SetStateAction<string>>
@@ -24,8 +24,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   lectures = {},
   setLectures,
   activeCourse,
-  openClassModal,
-  closeClassModal,
+  openCourseModal,
+  closeCourseModal,
   isClassModalOpen,
   setCourses,
   setActiveLecture
@@ -59,10 +59,10 @@ const ContentBox: React.FC<ContentBoxProps> = ({
             </h1>
             <button
               className="flex flex-row items-center gap-2 bg-accent pl-3 pr-4 py-2 rounded-lg hover:bg-accentHover"
-              onClick={openClassModal}
+              onClick={openCourseModal}
             >
               {icons.plusIcon}
-              <p className="font-semibold text-lg">New Class</p>
+              <p className="font-semibold text-lg">New Course</p>
             </button>
           </div>
           <div className="mt-4">
@@ -87,7 +87,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
             </ul>
           </div>
           {isClassModalOpen && (
-            <NewCourseModal onClose={closeClassModal} setCourses={setCourses} />
+            <NewCourseModal onClose={closeCourseModal} setCourses={setCourses} />
           )}
           {isLectureModalOpen && (
             <AddLectureModal
