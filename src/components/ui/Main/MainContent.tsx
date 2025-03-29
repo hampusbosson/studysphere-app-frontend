@@ -5,7 +5,7 @@ import ShowcaseContainer from "./ShowcaseContainer";
 
 const MainContent: React.FC = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center mt-14">
       <div className="flex flex-col justify-center items-center gap-4 max-w-5xl">
         <h1 className="text-5xl font-bold font-montserrat bg-shiny-silver bg-clip-text text-transparent flex text-center p-1">
           Master Your Studies, Effortlessly
