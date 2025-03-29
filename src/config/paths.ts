@@ -1,16 +1,25 @@
 export const paths = {
     // Landing page route
     landing: {
-      path: "/",
-      getHref: () => "/",
+      home: {
+        path: "/",
+        getHref: () => "/",
+      },
+      blog: {
+        path: "blog",
+        getHref: () => "/blog",
+      },
+      pricing: {
+        path: "pricing",
+        getHref: () => "/pricing",
+      }
     },
   
     // Auth routes
     auth: {
       login: {
         path: 'login',
-        getHref: (redirectTo?: string | null | undefined) =>
-          `/auth/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+        getHref: () => "/login",
       },
       signup: {
         path: "signup",
@@ -34,11 +43,15 @@ export const paths = {
     app: {
       home: {
         path: "home",
-        getHref: () => "/home",
+        getHref: () => "/home"
+      },
+      course: {
+        path: "courses",
+        getHref: () => "/courses",
       },
       lecture: {
         path: "lecture/:lectureId",
-        getHref: (lectureId: string) => `/home/lecture/${lectureId}`,
+        getHref: (lectureId?: string) => `/courses/lecture/${lectureId}`,
       },
     },
   } as const;

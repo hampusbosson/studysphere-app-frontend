@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useActiveCourse } from "../../../context/useActiveCourse";
 import CourseContent from "../../../features/course-material/components/course-content";
 import Toolbar from "../../../features/course-material/components/toolbar";
+import { paths } from "../../../config/paths";
 
 const LecturePage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const LecturePage: React.FC = () => {
 
   const handleClassClick = () => {
     setActiveCourse(courseItem);
-    navigate("/home");
+    navigate(paths.app.course.getHref());
   };
 
   return (

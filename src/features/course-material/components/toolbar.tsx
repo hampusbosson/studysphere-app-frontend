@@ -7,6 +7,7 @@ import { useState } from "react";
 import { deleteLecture } from "../api/delete-lecture";
 import { useNavigate } from "react-router-dom";
 import { useLectureByCourse } from "../../../context/use-lectures-by-course";
+import { paths } from "../../../config/paths";
 
 interface ToolbarProps {
   lecture: Lecture;
@@ -69,7 +70,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
     } catch (error) {
       console.error("Error deleting lecture:", error);
     } finally {
-        navigate('/home');
+        navigate(paths.app.course.path);
     }
   };
 

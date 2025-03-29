@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import NewCourseModal from "./NewCourseModal";
 import LoadingSpinner from "./LoadingSpinner";
 import { Course } from "../../../types/api";
+import { paths } from "../../../config/paths";
 
 interface ContentBoxProps {
   courseItem: Course | null;
@@ -44,7 +45,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
 
   const handleLectureClick = (lecture: Lecture) => {
     setActiveLecture(lecture.title);
-    navigate(`/home/lecture/${lecture.id}`, { state: { lecture, courseItem } });
+    navigate(paths.app.lecture.getHref(lecture.id), { state: { lecture, courseItem } });
   };
 
   return (

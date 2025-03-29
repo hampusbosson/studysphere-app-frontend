@@ -4,6 +4,7 @@ import { Course } from "../../../types/api";
 import { Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
 import LectureListItem from "../../course-material/components/LectureListItem";
+import { paths } from "../../../config/paths";
 
 interface CourseItemProps {
   courseItem: Course;
@@ -59,7 +60,7 @@ const CourseItem: React.FC<CourseItemProps> = ({
   const handleCourseClick = (courseItem: Course) => {
     setActiveLecture("");
     setActiveCourse(courseItem);
-    navigate("/home");
+    navigate(paths.app.course.getHref());
   };
 
   return (

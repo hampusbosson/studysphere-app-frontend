@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { resetPassword } from "../../../lib/auth";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../features/auth/components/ConfirmationModal";
+import { paths } from "../../../config/paths";
 
 const ResetPassword: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -35,7 +36,7 @@ const ResetPassword: React.FC = () => {
     }
   };
 
-  const handleLoginRedirect = () => navigate('/login');
+  const handleLoginRedirect = () => navigate(paths.auth.login.getHref());
 
   const handleModalClose = () => setModalVisible(false);
 

@@ -5,12 +5,13 @@ import LandingRoute from "./Routes/landing";
 import LoginPage from "./Routes/auth/LoginPage";
 import SignupPage from "./Routes/auth/SignUpPage";
 import VerifyEmail from "./Routes/auth/VerifyEmail";
-import HomePage from "./Routes/app/HomePage";
-import LecturePage from "./Routes/app/LecturePage";
+import CoursePage from "./Routes/app/course-page";
+import LecturePage from "./Routes/app/lecture-page";
 import RequestResetPassword from "./Routes/auth/RequestResetPassword";
 import ResetPassword from "./Routes/auth/ResetPassword";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import GuestRoute from "./Routes/GuestRoute";
+import HomePage from "./Routes/app/home-page";
 
 const AppRouter: React.FC = () => {
   return (
@@ -18,7 +19,7 @@ const AppRouter: React.FC = () => {
         <Routes>
           {/* Redirect base URL to /home if user is logged in */}
           <Route
-            path={paths.landing.path}
+            path={paths.landing.home.path}
             element={
               <GuestRoute>
                 <LandingRoute />
@@ -70,6 +71,15 @@ const AppRouter: React.FC = () => {
             element={
               <ProtectedRoute>
                 <HomePage />
+              </ProtectedRoute>
+            }
+          >
+          </Route>
+          <Route
+            path={paths.app.course.path}
+            element={
+              <ProtectedRoute>
+                <CoursePage />
               </ProtectedRoute>
             }
           >

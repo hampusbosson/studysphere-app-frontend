@@ -5,6 +5,7 @@ import { createLecture } from "../api/create-lecture";
 import { Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
 import { Course } from "../../../types/api";
+import { paths } from "../../../config/paths";
 
 
 interface AddSubjectModalProps {
@@ -68,7 +69,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({
   };
 
   const navigateToLecturePage = (lecture: Lecture) => {
-    navigate(`/home/lecture/${lecture.id}`, { state: { lecture, courseItem } });
+    navigate(paths.app.lecture.getHref(lecture.id), { state: { lecture, courseItem } });
   }
 
   return (

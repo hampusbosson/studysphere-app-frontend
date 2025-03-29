@@ -2,6 +2,7 @@ import React from "react";
 import { Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
 import { Course } from "../../../types/api";
+import { paths } from "../../../config/paths";
 
 interface LectureListItemProps {
   setActiveLecture: React.Dispatch<React.SetStateAction<string>>;
@@ -20,7 +21,7 @@ const LectureListItem: React.FC<LectureListItemProps> = ({
  
   const handleLectureClick = (lecture: Lecture) => {
     setActiveLecture(lecture.title);
-    navigate(`/home/lecture/${lecture.id}`, {
+    navigate(paths.app.lecture.getHref(lecture.id), {
       state: { lecture, courseItem },
     });
   };

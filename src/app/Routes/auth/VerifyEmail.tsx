@@ -3,6 +3,7 @@ import Logo from "../../../components/ui/Header/Logo";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resendOTP, verifyEmail, login } from "../../../lib/auth";
 import ConfirmationModal from "../../../features/auth/components/ConfirmationModal";
+import { paths } from "../../../config/paths";
 
 const VerifyEmail: React.FC = () => {
   const navigate = useNavigate();
@@ -81,7 +82,7 @@ const VerifyEmail: React.FC = () => {
         const token = await login(email, password);
         console.log("Logged in successfully, token:", token);
 
-        navigate("/home");
+        navigate(paths.app.home.getHref());
       } else {
         console.log("Email not verified!");
         setErrorMessage(

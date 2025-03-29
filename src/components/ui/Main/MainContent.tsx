@@ -2,6 +2,7 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import CallToActionButton from "./CallToActionButton";
 import ShowcaseContainer from "./ShowcaseContainer";
+import { paths } from "../../../config/paths";
 
 const MainContent: React.FC = () => {
   return (
@@ -16,7 +17,7 @@ const MainContent: React.FC = () => {
         </h2>
       </div>
       <div className="mt-10">
-        <CallToActionButton linkName="signup" buttonName="Get started for free" />
+        <CallToActionButton linkName={paths.auth.signup.getHref()} buttonName="Get started for free" />
         {/* Canvas wraps ShowcaseContainer */}
         <div className="mt-20 w-full h-[200px] bg-black">
           <Canvas>

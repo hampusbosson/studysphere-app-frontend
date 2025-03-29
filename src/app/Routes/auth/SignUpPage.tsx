@@ -6,6 +6,7 @@ import { signup } from "../../../lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { paths } from "../../../config/paths";
 
 const schema = z
   .object({
@@ -41,7 +42,7 @@ const SignupPage: React.FC = () => {
     try {
       await signup(email, password);
       
-      navigate("/verify", {state: { email, password } });
+      navigate(paths.auth.verify.getHref(), {state: { email, password } });
 
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
@@ -62,7 +63,7 @@ const SignupPage: React.FC = () => {
     }
   };
 
-  const loginRedirect = () => navigate('/login');
+  const loginRedirect = () => navigate(paths.auth.login.getHref());
 
   return (
     <div className="w-full flex flex-col justify-center items-center bg-background h-screen">

@@ -3,6 +3,7 @@ import Logo from "./Logo";
 import HeaderButton from "./HeaderButton";
 import MobileMenuButton from "./MobileMenuButton";
 import MobileMenuModal from "./MobileMenuModal";
+import { paths } from "../../../config/paths";
 
 const Header: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,14 +16,14 @@ const Header: React.FC = () => {
       <Logo clickable={true} size={48}/>
       <div className="flex-row gap-1 items-center hidden md:flex lg:gap-4">
         {/* This div is hidden on small screens */}
-        <HeaderButton linkName="/" buttonName="Home" />
-        <HeaderButton linkName="pricing" buttonName="Pricing" />
-        <HeaderButton linkName="blog" buttonName="Blog" />
+        <HeaderButton linkName={paths.landing.home.path} buttonName="Home" />
+        <HeaderButton linkName={paths.landing.pricing.path} buttonName="Pricing" />
+        <HeaderButton linkName={paths.landing.blog.path} buttonName="Blog" />
       </div>
       <div className="flex-row gap-1 items-center hidden md:flex lg:gap-4">
         {/* This div is also hidden on small screens */}
-        <HeaderButton linkName="login" buttonName="Log in" />
-        <HeaderButton linkName="signup" buttonName="Sign up" />
+        <HeaderButton linkName={paths.auth.login.path} buttonName="Log in" />
+        <HeaderButton linkName={paths.auth.signup.path} buttonName="Sign up" />
       </div>
       <div className="block pt-1 md:hidden">
         <MobileMenuButton onPress={openModal}/>

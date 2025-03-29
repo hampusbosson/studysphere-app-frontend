@@ -9,12 +9,14 @@ import { useActiveCourse } from "../../../context/useActiveCourse";
 import { Course } from "../../../types/api";
 import { getCourses } from "../../../features/courses/api/get-courses";
 import { useLectureByCourse } from "../../../context/use-lectures-by-course";
+import { paths } from "../../../config/paths";
 
-const HomePage: React.FC = () => {
+const CoursePage: React.FC = () => {
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
   const [activeLecture, setActiveLecture] = useState("");
   const [courses, setCourses] = useState<Course[]>([]);
-  const lectureRouteMatch = useMatch("/home/lecture/:lectureId"); // Check if the route matches the lecture page
+  const lectureRoutePattern = `${paths.app.course.getHref()}/${paths.app.lecture.path}`;
+  const lectureRouteMatch = useMatch(lectureRoutePattern); // Check if the route matches the lecture page
   const { activeCourse, setActiveCourse } = useActiveCourse();
   const { lecturesByCourse, setLecturesByCourse } = useLectureByCourse();
 
@@ -87,4 +89,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default CoursePage;

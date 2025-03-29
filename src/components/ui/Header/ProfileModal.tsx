@@ -4,6 +4,7 @@ import icons from "../../../assets/icons/icons";
 import { logout } from "../../../lib/auth";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../context/useAuth";
+import { paths } from "../../../config/paths";
 
 
 interface ProfileModalProps {
@@ -20,7 +21,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ email }) => {
 
             setUser(null);
             
-            navigate('/');
+            navigate(paths.landing.home.getHref());
         } catch(error) {
             console.error("Login failed:", error); // Log any errors
             alert("Login failed. Please try again."); // Provide feedback to the user

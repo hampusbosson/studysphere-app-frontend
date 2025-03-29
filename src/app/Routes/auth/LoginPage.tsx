@@ -7,6 +7,7 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../context/useAuth";
 import { AxiosError } from "axios";
+import { paths } from "../../../config/paths";
 
 const schema = z.object({
   email: z.string().email("Please provide a valid email address."),
@@ -37,7 +38,7 @@ const LoginPage: React.FC = () => {
       const userData = await getUserFromSession();
       setUser(userData);
 
-      navigate("/home"); // Redirect only on success
+      navigate(paths.app.home.getHref()); // Redirect only on success
     } catch (error) {
       // Handle errors and set them in the form
       if (error instanceof AxiosError && error.response?.data?.message) {
@@ -56,9 +57,9 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const signupRedirect = () => navigate("/signup");
+  const signupRedirect = () => navigate(paths.auth.signup.getHref());
 
-  const resetPasswordRedirect = () => navigate("/reset");
+  const resetPasswordRedirect = () => navigate(paths.auth.resetPassword.getHref());
 
   return (
     <div className="w-full flex flex-col justify-center items-center bg-background h-screen">
