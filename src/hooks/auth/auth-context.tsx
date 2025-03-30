@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
-import { getUserFromSession } from "../lib/auth";
-import { User } from "../types/api";
+import { getUserFromSession } from "../../lib/auth";
+import { User } from "../../types/api";
 
 interface AuthContextType {
     isLoggedIn: boolean;
