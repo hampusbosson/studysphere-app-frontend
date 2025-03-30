@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../context/useAuth";
+import useAuth from "../../../hooks/auth/useAuth";
 import { AxiosError } from "axios";
 import { paths } from "../../../config/paths";
 

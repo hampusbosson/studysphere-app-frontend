@@ -1,51 +1,50 @@
 import React, { useState } from "react";
 import icons from "../../../assets/icons/icons";
 import AddLectureModal from "../../course-material/components/AddLectureModal";
-import { Lecture } from "../../../types/api";
+import { Course, Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
 import NewCourseModal from "./NewCourseModal";
 import LoadingSpinner from "./LoadingSpinner";
-import { Course } from "../../../types/api";
 import { paths } from "../../../config/paths";
 
+
 interface ContentBoxProps {
-  courseItem: Course | null;
-  lectures?: Record<number, Lecture[]>;
-  setLectures: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
-  activeCourse: Course | null;
   openCourseModal: () => void;
   closeCourseModal: () => void;
   isClassModalOpen: boolean;
-  setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
+  setCourses: React.Dispatch<React.SetStateAction<Course[] | null>>
   setActiveLecture: React.Dispatch<React.SetStateAction<string>>
+  lecturesByCourse: Record<number, Lecture[]>;
+  setLecturesByCourse: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
+  activeCourse: Course | null;
 }
 
 const ContentBox: React.FC<ContentBoxProps> = ({
-  courseItem,
-  lectures = {},
-  setLectures,
-  activeCourse,
   openCourseModal,
   closeCourseModal,
   isClassModalOpen,
   setCourses,
-  setActiveLecture
+  setActiveLecture,
+  lecturesByCourse,
+  activeCourse,
+  setLecturesByCourse,
 }) => {
   const navigate = useNavigate();
   const [isLectureModalOpen, setIsLectureModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+
   const openLectureModal = () => setIsLectureModalOpen(true);
   const closeLectureModal = () => setIsLectureModalOpen(false);
 
   // Get the lectures for the current class
-  const currentLectures = courseItem
-    ? lectures[parseInt(courseItem.id)] || []
+  const currentLectures = activeCourse
+    ? lecturesByCourse[parseInt(activeCourse.id)] || []
     : [];
 
   const handleLectureClick = (lecture: Lecture) => {
     setActiveLecture(lecture.title);
-    navigate(paths.app.lecture.getHref(lecture.id), { state: { lecture, courseItem } });
+    navigate(paths.app.lecture.getHref(lecture.id), { state: { lecture, activeCourse } });
   };
 
   return (
@@ -93,8 +92,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           {isLectureModalOpen && (
             <AddLectureModal
               onClose={closeLectureModal}
-              courseItem={courseItem}
-              setLectures={setLectures}
+              activeCourse={activeCourse}
+              setLectures={setLecturesByCourse}
               setIsLoading={setIsLoading}
             />
           )}

@@ -160,7 +160,7 @@ const CourseItem: React.FC<CourseItemProps> = ({
                 setActiveLecture={setActiveLecture}
                 activeLecture={activeLecture}
                 lectureItem={lectureItem}
-                courseItem={courseItem}
+                activeCourse={activeCourse}
               />
             </li>
           ))}

@@ -9,14 +9,14 @@ import { paths } from "../../../config/paths";
 
 
 interface AddSubjectModalProps {
-  courseItem: Course | null;
+  activeCourse: Course | null;
   onClose: () => void;
   setLectures: React.Dispatch<React.SetStateAction<Record<number, Lecture[]>>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AddLectureModal: React.FC<AddSubjectModalProps> = ({
-  courseItem,
+  activeCourse,
   onClose,
   setLectures,
   setIsLoading
@@ -40,11 +40,11 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({
     try {
       setIsLoading(true);
       const newLecture = await createLecture(
-        courseItem?.id,
+        activeCourse?.id,
         subjectName.trim(),
         url.trim(),
       );
-      if (!courseItem?.id) {
+      if (!activeCourse?.id) {
         throw new Error("Class ID is undefined");
       }
 
@@ -53,7 +53,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({
         setLectures((prev) => {
           const updatedLectures = {
             ...prev,
-            [courseItem.id]: [...(prev[parseInt(courseItem.id)] || []), newLecture],
+            [activeCourse.id]: [...(prev[parseInt(activeCourse.id)] || []), newLecture],
           };
           resolve(updatedLectures); //ensure it's updated before navigating
           return updatedLectures;
@@ -69,7 +69,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({
   };
 
   const navigateToLecturePage = (lecture: Lecture) => {
-    navigate(paths.app.lecture.getHref(lecture.id), { state: { lecture, courseItem } });
+    navigate(paths.app.lecture.getHref(lecture.id), { state: { lecture, activeCourse } });
   }
 
   return (

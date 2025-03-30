@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import ProfileButton from "./ProfileButton";
 import ProfileModal from "./ProfileModal";
-import useAuth from "../../../context/useAuth";
+import useAuth from "../../../hooks/auth/useAuth";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../config/paths";
 

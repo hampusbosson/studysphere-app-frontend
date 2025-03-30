@@ -1,29 +1,29 @@
-import { Course } from "../../../types/api";
+import { Course, Lecture } from "../../../types/api";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { renameCourse } from "../../../features/courses/api/rename-course";
 import { deleteCourse } from "../../../features/courses/api/delete-course";
 import DeleteCourseModal from "../../../features/courses/components/DeleteCourseModal";
 import CourseItem from "../../../features/courses/components/CourseItem";
-import { Lecture } from "../../../types/api";
+
 
 interface SideBarProps {
-  courses: Course[];
-  setActiveCourse: React.Dispatch<React.SetStateAction<Course | null>>;
-  setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
-  activeCourse: Course | null;
-  lectures?: Record<number, Lecture[]>
+  courses: Course[] | null;
+  setCourses: React.Dispatch<React.SetStateAction<Course[] | null>>
   setActiveLecture: React.Dispatch<React.SetStateAction<string>>
   activeLecture: string;
+  activeCourse: Course | null;
+  setActiveCourse: React.Dispatch<React.SetStateAction<Course | null>>
+  lecturesByCourse: Record<number, Lecture[]>;
 }
 
 const SideBar: React.FC<SideBarProps> = ({
   courses,
   setCourses,
-  setActiveCourse,
-  activeCourse,
-  lectures,
   setActiveLecture,
-  activeLecture
+  activeLecture,
+  activeCourse,
+  setActiveCourse,
+  lecturesByCourse,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalName, setDeleteModalName] = useState("");
@@ -33,8 +33,9 @@ const SideBar: React.FC<SideBarProps> = ({
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({}); // Store refs for inputs
   const [listOpen, setListOpen] = useState<Record<string, boolean>>();
 
+  
   const handleDelete = async () => {
-    const courseToDelete = courses.find(
+    const courseToDelete = courses?.find(
       (courseItem) => courseItem.name === deleteModalName,
     );
     if (!courseToDelete) {
@@ -45,17 +46,17 @@ const SideBar: React.FC<SideBarProps> = ({
     try {
       await deleteCourse(parseInt(courseToDelete.id));
 
-      const updatedCourses = courses.filter(
+      const updatedCourses = courses?.filter(
         (courseItem) => courseItem.id !== courseToDelete.id,
       );
 
-      setCourses(updatedCourses);
+      setCourses(updatedCourses || null);
 
       closeDeleteModal();
 
       //reset activeClass if it was the one deleted
       if (activeCourse && activeCourse.name === deleteModalName) {
-        setActiveCourse(updatedCourses.length > 0 ? updatedCourses[0] : null);
+        setActiveCourse((updatedCourses ?? []).length > 0 ? (updatedCourses ?? [])[0] : null);
       }
     } catch (error) {
       console.error("Error deleting course:", error);
@@ -66,7 +67,7 @@ const SideBar: React.FC<SideBarProps> = ({
     setCourseInEdit(courseName);
     setEditValues((prev) => ({
       ...prev,
-      [courseName]: courses.find((item) => item.name === courseName)?.name || "", // Initialize with the current class name
+      [courseName]: courses?.find((item) => item.name === courseName)?.name || "", // Initialize with the current class name
     }));
 
     // Focus the input box after setting it to edit mode
@@ -87,7 +88,7 @@ const SideBar: React.FC<SideBarProps> = ({
       return;
     }
 
-    const courseToEdit = courses.find(
+    const courseToEdit = courses?.find(
       (courseItem) => courseItem.name === courseName,
     );
     if (!courseToEdit) {
@@ -101,13 +102,13 @@ const SideBar: React.FC<SideBarProps> = ({
         newCourseName,
       );
 
-      const updatedCourses = courses.map((courseItem) =>
+      const updatedCourses = courses?.map((courseItem) =>
         courseItem.id === renamedCourse.id
           ? { ...courseItem, name: renamedCourse.name }
           : courseItem,
       );
 
-      setCourses(updatedCourses);
+      setCourses(updatedCourses || null);
       setActiveCourse(renamedCourse);
       setCourseInEdit(null); // Exit edit mode
       
@@ -174,7 +175,7 @@ const SideBar: React.FC<SideBarProps> = ({
       <div className="sticky top-2 z-10">
       <p className="font-bold text-lg mb-4 ">My Courses</p>
       <ul className="space-y-2">
-        {courses.map((courseItem, index) => (
+        {courses?.map((courseItem, index) => (
           <CourseItem
             key={index}
             courseItem={courseItem}
@@ -190,7 +191,7 @@ const SideBar: React.FC<SideBarProps> = ({
             openDeleteModal={openDeleteModal}
             courseInEdit={courseInEdit}
             inputRefs={inputRefs}
-            lectures={lectures}
+            lectures={lecturesByCourse}
             editValues={editValues}
             openList={openList}
             closeList={closeList}

@@ -8,21 +8,21 @@ interface LectureListItemProps {
   setActiveLecture: React.Dispatch<React.SetStateAction<string>>;
   activeLecture: string;
   lectureItem: Lecture;
-  courseItem: Course;
+  activeCourse: Course | null;
 }
 
 const LectureListItem: React.FC<LectureListItemProps> = ({
   setActiveLecture,
   activeLecture,
   lectureItem,
-  courseItem,
+  activeCourse,
 }) => {
   const navigate = useNavigate();
  
   const handleLectureClick = (lecture: Lecture) => {
     setActiveLecture(lecture.title);
     navigate(paths.app.lecture.getHref(lecture.id), {
-      state: { lecture, courseItem },
+      state: { lecture, activeCourse },
     });
   };
 

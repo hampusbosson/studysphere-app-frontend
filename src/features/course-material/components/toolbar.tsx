@@ -6,7 +6,7 @@ import DeleteLectureModal from "./delete-lecture-modal";
 import { useState } from "react";
 import { deleteLecture } from "../api/delete-lecture";
 import { useNavigate } from "react-router-dom";
-import { useLectureByCourse } from "../../../context/use-lectures-by-course";
+import { useCourses } from "../../../hooks/courses/use-courses";
 import { paths } from "../../../config/paths";
 
 interface ToolbarProps {
@@ -24,7 +24,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 }) => {
   const navigate = useNavigate();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const { lecturesByCourse, setLecturesByCourse } = useLectureByCourse();
+  const { lecturesByCourse, setLecturesByCourse } = useCourses();
 
   const handlePdfClick = () => {
     setActiveButton("pdf");
@@ -70,7 +70,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
     } catch (error) {
       console.error("Error deleting lecture:", error);
     } finally {
-        navigate(paths.app.course.path);
+        navigate(paths.app.course.getHref());
     }
   };
 

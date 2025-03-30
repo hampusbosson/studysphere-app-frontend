@@ -3,7 +3,7 @@ import ProfileModalButton from "./ProfileModalButton";
 import icons from "../../../assets/icons/icons";
 import { logout } from "../../../lib/auth";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../context/useAuth";
+import useAuth from "../../../hooks/auth/useAuth";
 import { paths } from "../../../config/paths";
 
 

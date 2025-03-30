@@ -5,7 +5,7 @@ import { Course } from "../../../types/api";
 
 interface NewCourseModalProps {
   onClose: () => void;
-  setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
+  setCourses: React.Dispatch<React.SetStateAction<Course[] | null>>
 }
 
 const NewCourseModal: React.FC<NewCourseModalProps> = ({
@@ -33,7 +33,7 @@ const NewCourseModal: React.FC<NewCourseModalProps> = ({
       console.log(newCourseCapitalized);
       const newCourse = await createCourse(newCourseCapitalized);
 
-      setCourses((prevCourses) => [...prevCourses, newCourse]);
+      setCourses((prevCourses) => [...(prevCourses || []), newCourse]);
       setCourseName("");
       onClose();
     } catch (error) {

@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useActiveCourse } from "../../../context/useActiveCourse";
 import CourseContent from "../../../features/course-material/components/course-content";
 import Toolbar from "../../../features/course-material/components/toolbar";
 import { paths } from "../../../config/paths";
+import { useCourses } from "../../../hooks/courses/use-courses";
 
 const LecturePage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { lecture, courseItem } = location.state || {};
-  const { setActiveCourse } = useActiveCourse();
+  const { lecture, activeCourse } = location.state || {};
+  const { setActiveCourse } = useCourses();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [activeButton, setActiveButton] = useState("pdf");
   const [content, setContent] = useState(lecture.content);
@@ -27,14 +27,14 @@ const LecturePage: React.FC = () => {
   }, [lecture]);
 
   const handleClassClick = () => {
-    setActiveCourse(courseItem);
+    setActiveCourse(activeCourse);
     navigate(paths.app.course.getHref());
   };
 
   return (
     <div className="px-24">
       <div className="flex flex-row gap-2 text-gray-400 text-sm">
-        <button onClick={handleClassClick}>{courseItem.name}</button>
+        <button onClick={handleClassClick}>{activeCourse.name}</button>
         <p> / </p>
         <p className="text-white">{lecture.title}</p>
       </div>
@@ -43,7 +43,7 @@ const LecturePage: React.FC = () => {
           lecture={lecture}
           setActiveButton={setActiveButton}
           activeButton={activeButton}
-          courseItem={courseItem}
+          courseItem={activeCourse}
         />
         <CourseContent
           activeState={activeButton}
