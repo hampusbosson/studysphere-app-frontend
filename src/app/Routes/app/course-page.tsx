@@ -22,7 +22,7 @@ const CoursePage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="bg-background h-full grid grid-cols-6">
+      <div className="h-full grid grid-cols-6">
         <div className="col-span-1">
           <SideBar
             courses={courses}

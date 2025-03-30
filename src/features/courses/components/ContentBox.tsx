@@ -76,7 +76,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
               {currentLectures.map((lectureItem, index) => (
                 <li
                   key={index}
-                  className="border border-gray-600 w-60 h-64 rounded-lg hover:border-gray-400 hover:cursor-pointer"
+                  className="bg-background border border-gray-600 w-60 h-64 rounded-lg hover:border-gray-400 hover:cursor-pointer"
                   onClick={() => handleLectureClick(lectureItem)}
                 >
                   <p className="py-2 border-b border-gray-600 font-semibold text-center">
