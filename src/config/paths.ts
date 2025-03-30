@@ -49,6 +49,10 @@ export const paths = {
         path: "courses",
         getHref: () => "/courses",
       },
+      calendar: {
+        path: "calendar",
+        getHref: () => "/calendar",
+      },
       lecture: {
         path: "lecture/:lectureId",
         getHref: (lectureId?: string) => `/courses/lecture/${lectureId}`,

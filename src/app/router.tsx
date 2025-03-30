@@ -12,6 +12,7 @@ import ResetPassword from "./Routes/auth/ResetPassword";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import GuestRoute from "./Routes/GuestRoute";
 import HomePage from "./Routes/app/home-page";
+import CalendarPage from "./Routes/app/calendar-page";
 
 const AppRouter: React.FC = () => {
   return (
@@ -92,6 +93,16 @@ const AppRouter: React.FC = () => {
                 </ProtectedRoute>
               }
             />
+          </Route>
+          <Route
+            path={paths.app.calendar.path}
+            element={
+              <ProtectedRoute>
+                <CalendarPage />
+              </ProtectedRoute>
+            }
+          >
+            
           </Route>
         </Routes>
     </BrowserRouter>

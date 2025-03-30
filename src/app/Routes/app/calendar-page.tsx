@@ -1,14 +1,14 @@
 import React from "react"
 import DashboardLayout from "../../../components/layouts/dashboard-layout"
 
-const HomePage: React.FC = () => {
+const CalendarPage: React.FC = () => {
     return (
         <DashboardLayout>
-            <div className="p-4">
-                homepage
+            <div>
+                calendar page
             </div>
         </DashboardLayout>
     )
 }
 
-export default HomePage;
+export default CalendarPage;
