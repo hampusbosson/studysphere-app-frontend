@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import tailwindScrollbar from 'tailwind-scrollbar';
+
 export default {
   content: [
     "./index.html",
@@ -45,5 +47,6 @@ export default {
         'html, body': { fontFamily: 'raleway, sans-serif' }, // Set Montserrat as the default font
       });
     },
+    tailwindScrollbar({ nocompatible: true }),
   ],
 };
