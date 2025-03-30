@@ -74,7 +74,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-gray-300 bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-50"
+      className="fixed inset-0 bg-gray-800/50 backdrop-blur-xs flex justify-center items-center z-50"
       onClick={onClose}
     >
       <div
