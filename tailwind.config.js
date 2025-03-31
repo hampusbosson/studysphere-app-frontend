@@ -9,9 +9,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#0C0D12",
+        background: "#121212",
         backgroundOverlay: "#FFFFFF08",
-        accent: "#4762FF",
+        card: "#181818",
+        accent: "#00E5FF",
         accentHover: "#3F56E6",
         silver: '#E5E5E5',
       },
