@@ -4,6 +4,7 @@ import CourseContent from "../../../features/course-material/components/course-c
 import Toolbar from "../../../features/course-material/components/toolbar";
 import { paths } from "../../../config/paths";
 import { useCourses } from "../../../hooks/courses/use-courses";
+import { summarizeLecture } from "../../../features/course-material/api/summarize-lecture";
 
 const LecturePage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,8 +13,9 @@ const LecturePage: React.FC = () => {
   const { setActiveCourse } = useCourses();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [activeButton, setActiveButton] = useState("pdf");
-  const [content, setContent] = useState(lecture.content);
+  const [content, setContent] = useState("");
   const lectureUrl = lecture.url;
+  const [summaryLoading, setSummaryLoading] = useState(false);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -22,9 +24,35 @@ const LecturePage: React.FC = () => {
     }
   }, [content]);
 
+  /*
   useEffect(() => {
     setContent(lecture.content);
   }, [lecture]);
+*/
+
+
+useEffect(() => {
+  const cacheKey = `lecture-summary-${lecture.id}`;
+  const cachedSummary = localStorage.getItem(cacheKey);
+  
+  if (cachedSummary) {
+    setContent(cachedSummary);
+  } else {
+    const summarize = async (lectureId: string) => { 
+      setSummaryLoading(true);
+      const summarizedLecture = await summarizeLecture(lectureId);
+      const summarizedContent = summarizedLecture.content;
+      setContent(summarizedContent || "");
+      setSummaryLoading(false);
+      if (summarizedContent) {
+        localStorage.setItem(cacheKey, summarizedContent);
+      }
+    };
+    summarize(lecture.id);
+  }
+}, [lecture.id]);
+
+
 
   const handleClassClick = () => {
     setActiveCourse(activeCourse);
@@ -47,6 +75,7 @@ const LecturePage: React.FC = () => {
         />
         <CourseContent
           activeState={activeButton}
+          summaryLoading={summaryLoading}
           summarizedContent={content}
           lectureUrl={lectureUrl}
         />

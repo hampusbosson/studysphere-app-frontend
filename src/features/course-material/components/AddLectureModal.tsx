@@ -62,6 +62,7 @@ const AddLectureModal: React.FC<AddSubjectModalProps> = ({
 
       setIsLoading(false);
       navigateToLecturePage(newLecture);
+
     } catch (error) {
       console.error("Error creating lecture:", error);
       setErrorMessage("Failed to create lecture, Please try again.");

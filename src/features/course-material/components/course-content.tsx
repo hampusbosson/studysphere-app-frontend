@@ -1,15 +1,18 @@
 import React from "react";
 import { Tiptap } from "./TextEditor";
 import PdfViewer from "./pdf-viewer";
+import LoadingSpinner from "../../courses/components/LoadingSpinner";
 
 interface CourseContentProps {
   activeState: string;
+  summaryLoading: boolean;
   summarizedContent: string;
   lectureUrl: string; 
 }
 
 const CourseContent: React.FC<CourseContentProps> = ({
   activeState,
+  summaryLoading,
   summarizedContent,
   lectureUrl,
 }) => {
@@ -21,7 +24,7 @@ const CourseContent: React.FC<CourseContentProps> = ({
         {lectureUrl ? <PdfViewer url={proxyUrl} /> : <div></div>}
       </div>
       <div className={activeState === "summary" ? "block" : "hidden"}>
-        <Tiptap content={summarizedContent} />
+        {summaryLoading ? (<LoadingSpinner />) : <Tiptap content={summarizedContent} />}
       </div>
       <div className={activeState === "quiz" ? "block" : "hidden"}>
         quiz content
