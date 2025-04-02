@@ -24,4 +24,5 @@ export type Course = Entity<{
 export type Lecture = Entity<{
     title: string;
     content?: string;
+    summarizedContent?: string;
 }>
