@@ -3,24 +3,31 @@ import { Lecture } from "../../../types/api";
 import { useNavigate } from "react-router-dom";
 import { Course } from "../../../types/api";
 import { paths } from "../../../config/paths";
+import { useCourses } from "../../../hooks/courses/use-courses";
 
 interface LectureListItemProps {
   setActiveLecture: React.Dispatch<React.SetStateAction<string>>;
   activeLecture: string;
   lectureItem: Lecture;
-  activeCourse: Course | null;
 }
 
 const LectureListItem: React.FC<LectureListItemProps> = ({
   setActiveLecture,
   activeLecture,
   lectureItem,
-  activeCourse,
 }) => {
   const navigate = useNavigate();
- 
+  const { courses, setActiveCourse } = useCourses();
+
+  // find activeCourse from courses
+  const activeCourse: Course | null = courses?.find(
+    (course) => course.id === lectureItem.classId,
+  ) || null;
+
   const handleLectureClick = (lecture: Lecture) => {
+    setActiveCourse(activeCourse || null);
     setActiveLecture(lecture.title);
+    
     navigate(paths.app.lecture.getHref(lecture.id), {
       state: { lecture, activeCourse },
     });

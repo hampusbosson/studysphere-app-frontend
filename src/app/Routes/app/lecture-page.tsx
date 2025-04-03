@@ -16,7 +16,7 @@ const LecturePage: React.FC = () => {
   const [summarizedContent, setSummarizedContent] = useState("");
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [lecture, setLecture] = useState<Lecture>();
-  const { activeCourse, setActiveCourse, } = useCourses();
+  const { activeCourse, setActiveCourse } = useCourses();
   const lectureUrl = lecture?.url;
 
   useEffect(() => {
