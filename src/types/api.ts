@@ -25,4 +25,5 @@ export type Lecture = Entity<{
     title: string;
     content?: string;
     summarizedContent?: string;
+    url?: string;
 }>
