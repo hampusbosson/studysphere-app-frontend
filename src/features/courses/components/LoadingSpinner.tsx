@@ -1,21 +1,39 @@
 import React, { useState, useEffect, useMemo } from "react";
 import icons from "../../../assets/icons/icons";
 
-const LoadingSpinner: React.FC = () => {
+interface LoadingSpinnerProps {
+  type: "creation" | "summary";
+}
+
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ type }) => {
   const [loadingText, setLoadingText] = useState("Preparing your lecture...");
-  const [fade, setFade] = useState(false); // Controls fade-in effect
+  const [fade, setFade] = useState(true); // Controls fade-in effect
 
   // Memoized array to prevent re-creating it on every render
-  const loadingMessages = useMemo(
+  const loadingMessagesCreation = useMemo(
+    () => ["Preparing your lecture...", "Gathering resources..."],
+    [],
+  );
+
+  const loadingMessagesSummary = useMemo(
     () => [
-      "Preparing your lecture...",
-      "Gathering resources...",
-      "Summarizing key concepts...",
-      "Generating content...",
-      "Almost done...",
+      "Summarizing your lecture...",
+      "Gathering key insights...",
+      "Analyzing content...",
+      "Extracting important information...",
+      "Creating a summary...",
+      "Preparing your summary...",
     ],
     [],
-  ); // Empty dependency array ensures it is only created once
+  );
+
+  const messages =
+    type === "creation" ? loadingMessagesCreation : loadingMessagesSummary;
+
+  // Initialize the first message
+  useEffect(() => {
+    setLoadingText(messages[0]);
+  }, [messages]);
 
   useEffect(() => {
     let index = 0;
@@ -24,14 +42,14 @@ const LoadingSpinner: React.FC = () => {
       setFade(false); // Start fade-out effect
 
       setTimeout(() => {
-        index = (index + 1) % loadingMessages.length;
-        setLoadingText(loadingMessages[index]);
+        index = (index + 1) % messages.length;
+        setLoadingText(messages[index]);
         setFade(true); // Start fade-in effect
       }, 200); // Delay before switching text
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [loadingMessages]);
+  }, [messages]);
 
   return (
     <div className="h-full flex flex-col gap-2 justify-center items-center">

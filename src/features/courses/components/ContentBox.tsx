@@ -50,7 +50,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   return (
     <div className="h-full">
       {isLoading ? (
-        <LoadingSpinner />
+        <LoadingSpinner type={"creation"}/>
       ) : (
         <>
           <div className="flex flex-row justify-between items-start">
@@ -76,12 +76,12 @@ const ContentBox: React.FC<ContentBoxProps> = ({
               {currentLectures.map((lectureItem, index) => (
                 <li
                   key={index}
-                  className="bg-background border border-gray-600 w-60 h-64 rounded-lg hover:border-gray-400 hover:cursor-pointer"
+                  className="bg-card border border-gray-600 w-56 h-60 rounded-lg hover:border-gray-400 hover:cursor-pointer"
                   onClick={() => handleLectureClick(lectureItem)}
                 >
-                  <p className="py-2 border-b border-gray-600 font-semibold text-center">
+                  <div className="py-2 border-b border-gray-600 font-semibold text-center">
                     {lectureItem.title}
-                  </p>
+                  </div>
                 </li>
               ))}
             </ul>

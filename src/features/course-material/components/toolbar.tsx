@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import icons from "../../../assets/icons/icons";
 import { Lecture } from "../../../types/api";
 import { Course } from "../../../types/api";
 import DeleteLectureModal from "./delete-lecture-modal";
-import { useState } from "react";
 import { deleteLecture } from "../api/delete-lecture";
 import { useNavigate } from "react-router-dom";
 import { useCourses } from "../../../hooks/courses/use-courses";
 import { paths } from "../../../config/paths";
 
 interface ToolbarProps {
-  lecture: Lecture;
+  lecture: Lecture | undefined;
   activeButton: string;
   setActiveButton: React.Dispatch<React.SetStateAction<string>>;
-  courseItem: Course;
+  courseItem: Course | null;
+  summarize: (lectureId: string) => void;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -21,16 +21,22 @@ const Toolbar: React.FC<ToolbarProps> = ({
   activeButton,
   setActiveButton,
   courseItem,
+  summarize,
 }) => {
   const navigate = useNavigate();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const { lecturesByCourse, setLecturesByCourse } = useCourses();
+  const [summarized, setSummarized] = useState(false);
 
   const handlePdfClick = () => {
     setActiveButton("pdf");
   };
 
   const handleSummaryClick = () => {
+    if (lecture && !lecture?.summarizedContent && !summarized) {
+      summarize(lecture.id);
+      setSummarized(true);
+    }
     setActiveButton("summary");
   };
 
@@ -45,10 +51,14 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
   
   const handleDelete = async () => {
-    const courseId = parseInt(courseItem.id)
+    if (!courseItem) {
+      console.error("Course item is null");
+      return;
+    }
+    const courseId = parseInt(courseItem.id);
     const currentLectures = lecturesByCourse[courseId] || [];
     const lectureToDelete = currentLectures.find(
-      (lectureItem) => lectureItem.id === lecture.id
+      (lectureItem) => lectureItem.id === lecture?.id
     );
 
     if (!lectureToDelete) {
@@ -57,7 +67,11 @@ const Toolbar: React.FC<ToolbarProps> = ({
     }
 
     try {
-      await deleteLecture(parseInt(lecture.id));
+      if (lecture?.id) {
+        await deleteLecture(parseInt(lecture.id));
+      } else {
+        console.error("Lecture ID is undefined");
+      }
 
       const updatedLectures = currentLectures.filter(
         (lectureItem) => lectureItem.title !== lectureToDelete.title,

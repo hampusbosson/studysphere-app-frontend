@@ -2,7 +2,7 @@ import React from "react";
 import { Lecture } from "../../../types/api";
 
 interface DeleteLectureModalProps {
-  lecture: Lecture;
+  lecture: Lecture | undefined;
   onClose: () => void;
   handleDelete: () => Promise<void>;
 }
@@ -19,7 +19,7 @@ const DeleteLectureModal: React.FC<DeleteLectureModalProps> = ({ lecture, onClos
       >
         <h1 className="text-lg">
           Are you sure you want to delete the lecture{" "}
-          <strong>{lecture.title}</strong>? The lecture and all its content will be
+          <strong>{lecture?.title}</strong>? The lecture and all its content will be
           removed.
         </h1>
         <div className="flex flex-row gap-3 w-full justify-end">

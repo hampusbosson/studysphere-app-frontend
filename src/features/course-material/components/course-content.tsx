@@ -7,7 +7,7 @@ interface CourseContentProps {
   activeState: string;
   summaryLoading: boolean;
   summarizedContent: string;
-  lectureUrl: string; 
+  lectureUrl: string | undefined; 
 }
 
 const CourseContent: React.FC<CourseContentProps> = ({
@@ -16,7 +16,8 @@ const CourseContent: React.FC<CourseContentProps> = ({
   summarizedContent,
   lectureUrl,
 }) => {
-  const proxyUrl = `http://localhost:3000/api/lecture/proxy?url=${encodeURIComponent(lectureUrl)}`;
+
+  const proxyUrl = `http://localhost:3000/api/lecture/proxy?url=${encodeURIComponent(lectureUrl || "")}`;
 
   return (
     <div className="-mt-2 pb-1">
@@ -24,7 +25,7 @@ const CourseContent: React.FC<CourseContentProps> = ({
         {lectureUrl ? <PdfViewer url={proxyUrl} /> : <div></div>}
       </div>
       <div className={activeState === "summary" ? "block" : "hidden"}>
-        {summaryLoading ? (<LoadingSpinner />) : <Tiptap content={summarizedContent} />}
+        {summaryLoading ? (<LoadingSpinner type="summary" />) : <Tiptap content={summarizedContent} />}
       </div>
       <div className={activeState === "quiz" ? "block" : "hidden"}>
         quiz content
