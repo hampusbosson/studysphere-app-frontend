@@ -11,11 +11,6 @@ interface CoursesContextType {
   setLecturesByCourse: React.Dispatch<
     React.SetStateAction<Record<number, Lecture[]>>
   >;
-  summarizedLectures: Record<string, boolean>;
-  setSummarizedLectures: React.Dispatch<
-    React.SetStateAction<Record<string, boolean>>
-  >;
-  
 }
 
 const CoursesContext = createContext<CoursesContextType | undefined>(undefined);
@@ -27,9 +22,6 @@ export const CoursesProvider: React.FC<{ children: ReactNode }> = ({
   const [activeCourse, setActiveCourse] = useState<Course | null>(null);
   const [lecturesByCourse, setLecturesByCourse] = useState<
     Record<number, Lecture[]>
-  >({});
-  const [summarizedLectures, setSummarizedLectures] = useState<
-    Record<string, boolean>
   >({});
 
   useEffect(() => {
@@ -48,17 +40,6 @@ export const CoursesProvider: React.FC<{ children: ReactNode }> = ({
               {},
             );
 
-          // Build summarizedLectures record.
-          // For each lecture, if lecture.summarizedContent exists, mark it as summarized.
-          const newSummarizedLectures: Record<string, boolean> = {};
-          userCourses.forEach((course) => {
-            (course.lectures || []).forEach((lecture) => {
-              newSummarizedLectures[lecture.id] = Boolean(
-                lecture.summarizedContent,
-              );
-            });
-          });
-          setSummarizedLectures(newSummarizedLectures);
           setLecturesByCourse(newLecturesByCourse);
         }
       } catch (error) {
@@ -78,8 +59,6 @@ export const CoursesProvider: React.FC<{ children: ReactNode }> = ({
         setCourses,
         setActiveCourse,
         setLecturesByCourse,
-        summarizedLectures,
-        setSummarizedLectures,
       }}
     >
       {children}
