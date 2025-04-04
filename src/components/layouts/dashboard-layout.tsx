@@ -7,7 +7,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     return (
-        <div className="flex flex-col h-screen bg-background">
+        <div className="flex flex-col h-screen overflow-auto bg-background">
             <HeaderLoggedIn />
             <div className="flex-grow">{children}</div>
         </div>
