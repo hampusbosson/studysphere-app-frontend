@@ -30,7 +30,17 @@ export const CoursesProvider: React.FC<{ children: ReactNode }> = ({
         const userCourses = await getCourses();
         setCourses(userCourses || []);
         if (userCourses && userCourses.length > 0) {
-          setActiveCourse(userCourses[0]);
+          const storedCourseId = localStorage.getItem("activeCourseId");
+          if (storedCourseId) {
+            console.log(storedCourseId);
+            const foundCourse = userCourses.find(course => parseInt(course.id) === parseInt(storedCourseId));
+            console.log(foundCourse);
+            if (foundCourse) {
+              setActiveCourse(foundCourse);
+            }
+          } else {
+            setActiveCourse(userCourses[0]);
+          }
           const newLecturesByCourse: Record<number, Lecture[]> =
             userCourses.reduce(
               (acc: Record<number, Lecture[]>, courseItem: Course) => {

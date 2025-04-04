@@ -17,7 +17,7 @@ const LectureListItem: React.FC<LectureListItemProps> = ({
   lectureItem,
 }) => {
   const navigate = useNavigate();
-  const { courses, setActiveCourse } = useCourses();
+  const { courses, setActiveCourse } = useCourses();  
 
   // find activeCourse from courses
   const activeCourse: Course | null = courses?.find(
@@ -26,6 +26,7 @@ const LectureListItem: React.FC<LectureListItemProps> = ({
 
   const handleLectureClick = (lecture: Lecture) => {
     setActiveCourse(activeCourse || null);
+    localStorage.setItem("activeCourseId", activeCourse?.id || "");
     setActiveLecture(lecture.title);
     
     navigate(paths.app.lecture.getHref(lecture.id), {

@@ -60,6 +60,7 @@ const CourseItem: React.FC<CourseItemProps> = ({
   const handleCourseClick = (courseItem: Course) => {
     setActiveLecture("");
     setActiveCourse(courseItem);
+    localStorage.setItem("activeCourseId", courseItem.id);
     navigate(paths.app.course.getHref());
   };
 
