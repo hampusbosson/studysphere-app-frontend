@@ -11,7 +11,7 @@ export default {
       colors: {
         background: "#121212",
         backgroundOverlay: "#FFFFFF08",
-        card: "#181818",
+        card: "#1E1E1E",
         accent: "#00E5FF",
         accentHover: "#3F56E6",
         silver: '#E5E5E5',
