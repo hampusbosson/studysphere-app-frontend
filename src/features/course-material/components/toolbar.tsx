@@ -90,40 +90,43 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
 
   return (
-    <div className="bg-gray-900 flex flex-row justify-between p-4 rounded-xl font-bold ">
+    <div className="bg-card mb-4 flex flex-row justify-between p-2 rounded-md font-bold ">
       <div className="flex flex-row gap-2">
         <button
-          className={`py-1 w-24 rounded-lg ${
+          className={`py-2 px-6 rounded-sm flex flex-row gap-2 items-center text-gray-500 ${
             activeButton === "pdf"
-              ? "bg-gray-800 border border-gray-400 "
-              : "bg-gray-700"
+              ? "bg-black text-white"
+              : ""
           }`}
           onClick={handlePdfClick}
         >
-          PDF
+          {icons.pdfIcon(activeButton === "pdf")}
+          <p>PDF</p>
         </button>
         <button
-          className={`py-1 w-24 rounded-lg ${
+          className={`py-2 px-6 rounded-sm flex flex-row gap-2 items-center text-gray-500  ${
             activeButton === "summary"
-              ? "bg-gray-800 border border-gray-400 "
-              : "bg-gray-700"
+              ? "bg-black text-white"
+              : ""
           }`}
           onClick={handleSummaryClick}
         >
-          Summary
+          {icons.summaryIcon(activeButton === "summary")}
+          <p>Summary</p>
         </button>
         <button
-          className={`py-1 w-24 rounded-lg ${
+          className={`py-2 px-6 rounded-sm flex flex-row gap-2 items-center text-gray-500  ${
             activeButton === "quiz"
-              ? "bg-gray-800 border border-gray-400"
-              : "bg-gray-700"
+              ? "bg-background text-white"
+              : ""
           }`}
           onClick={handleQuizClick}
         >
-          Quiz
+          {icons.quizIcon(activeButton === "quiz")}
+          <p>Quiz</p>
         </button>
       </div>
-      <div className="flex flex-row gap-2 align-top h-full">
+      <div className="flex flex-row gap-4 items-center justify-center mr-4">
         <button
           onClick={(e) => {
             e.stopPropagation();
