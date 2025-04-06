@@ -69,7 +69,7 @@ const LecturePage: React.FC = () => {
         <p> / </p>
         <p className="text-white">{lecture?.title}</p>
       </div>
-      <div className="bg-gray-900 rounded-xl mt-2 flex flex-col gap-2">
+      <div className="rounded-xl mt-2 flex flex-col gap-2">
         <Toolbar
           lecture={lecture}
           setActiveButton={setActiveButton}
