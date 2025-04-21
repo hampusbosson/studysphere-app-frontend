@@ -9,10 +9,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#121212",
+        background: "#0e0e0e",
         backgroundOverlay: "#FFFFFF08",
         card: "#1E1E1E",
-        accent: "#00E5FF",
+        accent: "#007ACC",
         accentHover: "#3F56E6",
         silver: '#E5E5E5',
       },
@@ -21,8 +21,8 @@ export default {
         'shiny-silver': 'linear-gradient(90deg, #C0C0C0, #E5E5E5, #C0C0C0)',
       },
       fontFamily: {
-        montserrat: ['Montserrat', 'sans-serif'], // Adds Lato font family
-        raleway: ['Raleway', 'sans-serif'], // Adds Montserrat font family
+        montserrat: ['Montserrat', 'sans-serif'], 
+        raleway: ['Raleway', 'sans-serif'], 
       },
       fontWeight: {
         hairline: 100,
