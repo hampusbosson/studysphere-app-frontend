@@ -97,6 +97,7 @@ The frontend will run on **http://localhost:5173** by default and proxy all API 
 6. **Offline Support**: Cache lectures and summaries for offline viewing.
 7. **Custom Theming**: Allow users to switch between light/dark and personalize colors.
 
+---
 
 ## App Preview:
 **Original PDF Content:**
