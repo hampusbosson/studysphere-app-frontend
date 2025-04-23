@@ -1,4 +1,1 @@
-*.js linguist-vendored
-*.jsx linguist-vendored
-*.ts linguist-language=TypeScript
-*.tsx linguist-language=TypeScript
+
