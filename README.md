@@ -1,50 +1,114 @@
-# React + TypeScript + Vite
+⚠️ **Work In Progress:** This application is an early preview and not yet complete; it currently showcases core functionality—primarily summarizing PDFs via links.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# StudySphere
 
-Currently, two official plugins are available:
+**StudySphere** is a full-stack web application helping students organize and access their course materials—PDFs, AI‑generated summaries, and quizzes—in one place. The project is split into two repositories: one for the frontend (React) and one for the backend (Node.js/Express).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Repository Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **[studysphere-backend](https://github.com/hampusbosson/studysphere-backend)**  
+  Implements the REST API, database models, and AI summarization logic.
 
-- Configure the top-level `parserOptions` property like this:
+- **[studysphere-frontend](https://github.com/hampusbosson/studysphere-app-frontend)**  
+  Provides the React UI, authentication flows, PDF viewing, and summary display.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+---
+
+## Quick Start
+
+You’ll need two terminals (or tabs) to run both services concurrently.
+
+### 1. Backend Setup
+
+```bash
+# 1. Clone the backend repo
+git clone https://github.com/hampusbosson/studysphere-backend.git
+cd studysphere-backend
+
+# 2. Install dependencies
+npm install
+
+# 3. Copy & configure environment variables
+cp .env.example .env
+# Then edit `.env` and set:
+#   DATABASE_URL=postgresql://user:pass@host:port/dbname
+#   OPENAI_KEY=sk-...
+
+# 4. Run database migrations
+npx prisma migrate dev --name init
+
+# 5. Start the development server
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+The backend will run on **http://localhost:3000** by default.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 2. Frontend Setup
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+# 1. Clone the frontend repo
+git clone https://github.com/hampusbosson/studysphere-app-frontend.git
+cd studysphere-frontend
+
+# 2. Install dependencies
+npm install
+
+# 3. Copy & configure environment variables
+cp .env.example .env
+# • Set VITE_API_URL=http://localhost:3000/api
+
+# 4. Start the development server
+npm run dev
 ```
+
+The frontend will run on **http://localhost:5173** by default and proxy all API calls to the backend.
+
+---
+
+## Features
+
+- **User Authentication**: Sign up, login, email verification, password resets, and secure sessions.
+- **Course & Lecture Management**: Create, rename, and delete courses; add lectures via PDF URLs.
+- **PDF Viewer**: Inline PDF rendering with CORS proxy to handle external URLs.
+- **AI Summarization**: Generate concise summaries of long PDFs.
+- **Rich Text Editor**: Display and edit summaries with Tiptap, including headings, lists, and highlighting.
+- **Global State Management**: React Contexts store courses, lectures, and summary flags to minimize API calls.
+- **Dark-Themed UI**: Tailwind CSS powers a modern, responsive, dark interface.
+
+---
+
+## Development Tips
+
+- Use **React Query** on the frontend to cache and refetch data automatically.
+- Inspect API endpoints with tools like **Postman** or **Insomnia**.
+- For AI usage, monitor token usage in your OpenAI dashboard.
+- Update Prisma models and generate migrations with `npx prisma migrate dev`.
+
+---
+
+## Roadmap
+
+1. **File Uploads**: Let users upload PDFs directly instead of linking URLs.
+2. **Quiz Module**: Create and take interactive quizzes per lecture.
+3. **Collaborative Notes**: Real‑time comments and highlights on lecture content.
+4. **Calendar Scheduler**: Plan study sessions through an interactive calendar module.
+6. **Offline Support**: Cache lectures and summaries for offline viewing.
+7. **Custom Theming**: Allow users to switch between light/dark and personalize colors.
+
+---
+
+## App Preview:
+**Original PDF Content:**
+
+<img width="1421" alt="Skärmavbild 2025-04-21 kl  22 33 39" src="https://github.com/user-attachments/assets/258e852d-6f7f-4d86-9c2b-0842924b7e43" />
+
+---
+
+**Summary Of PDF In Texteditor Module:**
+
+<img width="1419" alt="Skärmavbild 2025-04-21 kl  22 34 37" src="https://github.com/user-attachments/assets/11d09973-8af2-430c-8027-2fdeca1c9216" />
+
+
+
